@@ -402,7 +402,7 @@ age,race,sex,county,chronic_condition
 84,African-American/ Black,Female,Clayton,Yes
 54,African-American/ Black,Male,Clayton,Yes
 64,African-American/ Black,Female,Clayton,Unknown
-38,African-American/ Black,Male,Clayton,Yes
+39,African-American/ Black,Male,Clayton,Yes
 56,African-American/ Black,Female,Clayton,No
 56,White,Male,Clayton,Yes
 63,White,Female,Clayton,Unknown
@@ -709,6 +709,7 @@ age,race,sex,county,chronic_condition
 90+,White,Female,Cobb,No
 90+,African-American/ Black,Female,Cobb,Unknown
 79,White,Male,Cobb,Unknown
+90+,Other,Female,Cobb,Unknown
 87,White,Female,Cobb,Yes
 55,Other,Male,Cobb,Yes
 79,White,Male,Cobb,Unknown
@@ -1646,7 +1647,7 @@ age,race,sex,county,chronic_condition
 70,African-American/ Black,Male,Gwinnett,Yes
 66,White,Female,Gwinnett,Yes
 66,African-American/ Black,Male,Gwinnett,Yes
-58,Other,Female,Gwinnett,Unknown
+59,Other,Female,Gwinnett,Unknown
 85,Asian,Female,Gwinnett,Yes
 74,White,Female,Gwinnett,Yes
 65,White,Male,Gwinnett,No
@@ -2656,21 +2657,21 @@ age,race,sex,county,chronic_condition
 77,Asian,Male,Non-Georgia Resident,Yes
 59,African-American/ Black,Female,Non-Georgia Resident,Yes
 59,African-American/ Black,Female,Non-Georgia Resident,Unknown
-74,Unknown,Male,Non-Georgia Resident,Unknown
 82,White,Male,Non-Georgia Resident,No
 84,African-American/ Black,Female,Non-Georgia Resident,Unknown
+74,Unknown,Male,Non-Georgia Resident,Unknown
 68,African-American/ Black,Female,Non-Georgia Resident,No
 87,White,Male,Non-Georgia Resident,Yes
 89,African-American/ Black,Female,Non-Georgia Resident,Unknown
 79,African-American/ Black,Female,Non-Georgia Resident,Unknown
 69,African-American/ Black,Female,Non-Georgia Resident,Unknown
 61,White,Female,Non-Georgia Resident,No
+67,Unknown,Male,Non-Georgia Resident,Unknown
 53,White,Male,Non-Georgia Resident,Yes
 69,White,Male,Non-Georgia Resident,Unknown
 71,White,Male,Non-Georgia Resident,Yes
 58,African-American/ Black,Female,Non-Georgia Resident,Yes
 73,African-American/ Black,Female,Non-Georgia Resident,Yes
-87,African-American/ Black,Male,Non-Georgia Resident,Yes
 90+,African-American/ Black,Female,Non-Georgia Resident,Unknown
 77,White,Male,Non-Georgia Resident,Unknown
 65,African-American/ Black,Male,Non-Georgia Resident,Unknown
@@ -2684,10 +2685,10 @@ age,race,sex,county,chronic_condition
 59,African-American/ Black,Male,Non-Georgia Resident,Yes
 57,African-American/ Black,Male,Non-Georgia Resident,Yes
 27,White,Female,Non-Georgia Resident,Unknown
+88,African-American/ Black,Male,Non-Georgia Resident,Yes
 85,White,Male,Non-Georgia Resident,Yes
 75,African-American/ Black,Female,Non-Georgia Resident,Yes
 65,African-American/ Black,Female,Non-Georgia Resident,Unknown
-90+,African-American/ Black,Female,Non-Georgia Resident,Unknown
 90+,White,Female,Non-Georgia Resident,Yes
 54,Unknown,Male,Unknown,Yes
 .,African-American/ Black,Male,Unknown,Unknown
