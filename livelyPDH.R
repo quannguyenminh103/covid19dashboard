@@ -34,9 +34,9 @@ MergedGA <- MergedGA%>%
 staticPlot <- function(status,lowColor,highColor){
   status_map <- ggplot() + geom_polygon( data=MergedGA, 
                                            aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',County, "<br>", "<b>",status," Cases: </b>", MergedGA[,status]), fill = MergedGA[,status]), 
-                                           color="white", size = 0.2) 
+                                           color="black", size = 0.2) 
   status_map <- status_map + scale_fill_continuous(low = lowColor, high = highColor, limits = c(0,max(MergedGA[,names(MergedGA) == status])), 
-                                                   breaks= quantile(MergedGA[,names(MergedGA) == status],c(0,0.25,0.5,0.8,0.9,0.92,0.95,0.97,1)),
+                                                   breaks= quantile(MergedGA[,names(MergedGA) == status],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1)),
                                                    na.value = "grey50") +
     coord_map("polyconic") + theme_map() +
     labs(title=paste0("Georgia ",status," Cases Map")) + theme(legend.position = "none") + 
