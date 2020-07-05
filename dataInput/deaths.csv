@@ -683,6 +683,7 @@ age,race,sex,county,chronic_condition
 80,African-American/ Black,Male,Cobb,No
 71,White,Female,Cobb,No
 81,White,Female,Cobb,Yes
+19,Unknown,Male,Cobb,Yes
 81,African-American/ Black,Female,Cobb,Yes
 74,African-American/ Black,Female,Cobb,Yes
 72,African-American/ Black,Male,Cobb,Unknown
@@ -1931,6 +1932,7 @@ age,race,sex,county,chronic_condition
 69,White,Male,Harris,Unknown
 58,African-American/ Black,Male,Harris,Yes
 76,White,Female,Harris,Yes
+67,White,Male,Harris,No
 62,African-American/ Black,Female,Harris,Yes
 40,White,Female,Harris,No
 89,Unknown,Female,Harris,Unknown
@@ -2656,8 +2658,8 @@ age,race,sex,county,chronic_condition
 90+,African-American/ Black,Female,Non-Georgia Resident,Yes
 77,Asian,Male,Non-Georgia Resident,Yes
 59,African-American/ Black,Female,Non-Georgia Resident,Yes
-59,African-American/ Black,Female,Non-Georgia Resident,Unknown
 82,White,Male,Non-Georgia Resident,No
+59,African-American/ Black,Female,Non-Georgia Resident,Unknown
 84,African-American/ Black,Female,Non-Georgia Resident,Unknown
 74,Unknown,Male,Non-Georgia Resident,Unknown
 68,African-American/ Black,Female,Non-Georgia Resident,No
@@ -2808,6 +2810,7 @@ age,race,sex,county,chronic_condition
 56,White,Male,Whitfield,No
 89,White,Female,Whitfield,Unknown
 81,White,Male,Whitfield,Yes
+53,White,Male,Whitfield,Yes
 69,White,Male,Whitfield,Yes
 68,White,Female,Whitfield,Yes
 79,White,Male,Wilcox,Yes
