@@ -1,56 +1,272 @@
-install.packages('shiny')
-install.packages('Hmisc')
-install.packages('tmap')
-install.packages('backports')
-install.packages('dplyr')
-install.packages('magick')
-install.packages('expm')
-install.packages('tidyverse')
-install.packages('spdep')
-install.packages('spdplyr')
-install.packages('lubridate')
-install.packages('extrafont')
-install.packages('httr')
-install.packages('rgdal')
-install.packages('viridis')
-install.packages('devtools')
-install.packages('packcircles')
-install.packages('hpackedbubble')
-install.packages('ggiraph')
+# install.packages('shiny')
+# install.packages('Hmisc')
+# install.packages('backports')
+# install.packages('dplyr')
+# install.packages('magick')
+# install.packages('expm')
+# install.packages('tidyverse')
+# install.packages('spdplyr')
+# install.packages('lubridate')
+# install.packages('httr')
+# install.packages('rgdal')
+# install.packages('viridis')
+# install.packages('devtools')
+# install.packages('packcircles')
+# install.packages('ggiraph')
+# install.packages('giphyr')
+
 library(shiny)
-library(magick)
-library(ggplot2)
-library(maps)
+library(shinydashboard)
+#library(magick)
+#library(ggplot2)
+#library(maps)
 library(dplyr)
 library(Hmisc)
-library(tmap)
 library(stringr)
-library(ggmap)
-library(ggthemes)
-library(leaflet)
-library(rgdal)
-library(plotly)
-library(ggmap)
-library(expm)
-library(extrafont)
-library(httr)
-library(lubridate)
-library(magick)
-library(rgdal)
-library(spdep)
-library(spdplyr)
-library(tidyverse)
-library(viridis)
-library(devtools)
-library(png)
-library(purrr)
+library(giphyr)
+#library(ggthemes)
+#library(rgdal)
+#library(plotly)
+#library(lubridate)
+#library(rgdal)
+#library(spdplyr)
+#library(tidyverse)
+#library(viridis)
+#library(devtools)
+#library(png)
+#library(purrr)
+library(tableHTML)
 
+source('./tabletop10.R')
+source('./livelyPDH.R')
+source('./newMap.R')
+source('./rank_by_state.R')
+source('./lineChart.R')
+source('./multiplelinecharts.R')
+source('./demographicsData.R')
 
-ui <- dashboardPage(
-  dashboardHeader(),
-  dashboardSidebar(),
-  dashboardBody()
-  
+overviewData = read.csv('./dataInput/countycases.csv', as.is = TRUE)
+dailyData = read.csv('./dataInput/daily.csv', as.is = TRUE)
+
+dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
+
+### OVERVIEW TABS:
+overviewData <- rbind(overviewData, data.frame(county_resident = "All", t(colSums(overviewData[, -c(1,5)])), case_rate = mean(overviewData$case_rate)))
+overviewData <- overviewData[order(overviewData$county_resident),]
+head(overviewData)
+county_list <- unique(overviewData$county_resident)
+
+###  ASSEMBLE THE WEBSITE CONTENTs
+
+sidebar <- dashboardSidebar(width = 350,
+  sidebarMenu(
+    menuItem("Overview", tabName = "overview", icon = icon("dashboard")),
+    menuItem("Statistics Maps", icon = icon("map"), tabName = "maps",
+             badgeLabel = "Time", badgeColor = "green"),
+    menuItem("MAGE Model Charts", icon = icon("chart-line"), tabName = "mage",
+             badgeLabel = "Highlight", badgeColor = "green"),
+    menuItem("COVID-19 by Age, Race & Gender", icon = icon("layer-group"), tabName = 'factors'),
+    menuItem("Data Resources", icon = icon("file-code-o"), tabName = 'data')
+  )
 )
-server <- function(input,output){}
+
+body <- dashboardBody(
+  tabItems(
+    tabItem(tabName = "overview",
+            fluidRow(
+              column(4,selectInput("county", "Choose a county: ",
+                                   county_list))
+            ),
+            fluidRow( class ='text-center',
+                      #tags$head(tags$style(HTML(".small-box {height: 50px}"))),
+                      valueBoxOutput("PositiveBox", width = 3),
+                      valueBoxOutput("DeathBox", width = 3),
+                      valueBoxOutput("DeathRatioBox", width = 3),
+                      valueBoxOutput("HospitalizationBox", width = 3)
+            ),
+            fluidRow( class = 'text-center',
+                      valueBoxOutput("USPositiveBox", width = 4),
+                      valueBoxOutput("USDeathBox", width = 4),
+                      valueBoxOutput("USDeathRatioBox", width = 4),
+                      
+            ),
+            fluidRow(class = 'text-center',
+                     box(dataTableOutput('TopTable')),
+                     box(plotlyOutput('dailyGrowth', height = 350)),
+                     box(plotlyOutput('StateRank', height = 350))
+            )
+    ),
+    
+    tabItem(tabName = "maps",
+            fluidRow(
+              box(width = 4, plotlyOutput('PositiveMap')),
+              box(width = 4,plotlyOutput('DeathMap')),
+              box(width = 4,plotlyOutput('HospitalizationMap'))
+            ),
+            fluidRow(
+              box(width = 6, img(src="GAConfirmedCasesMap.gif"))
+              #plotlyOutput('PositiveGIF')
+            )
+    ),
+    tabItem(tabName = 'factors',
+            fluidRow(
+              box(plotlyOutput('Age')),
+              box(plotlyOutput('Gender'))
+            ),
+            fluidRow(
+              box(ggiraphOutput("Race")),
+              #column(6,div(style="width:400px;height:800px;", ggiraphOutput("Race"))),
+              box(plotlyOutput('Combined'), height = 530)
+            )
+    ),
+    tabItem(tabName = 'mage',
+            fluidRow(
+              box(plotlyOutput('SusceptPro')),
+              box(plotlyOutput('NCperday'))
+            ),
+            fluidRow(
+              box(plotlyOutput('DeathPro')),
+              box(plotlyOutput('Dperday'))
+            ),
+            fluidRow(
+              box(plotlyOutput('Hospitalization')),
+              box(plotlyOutput('ICU'))
+            )
+    ),
+    
+    tabItem(tabName = 'data',
+            tags$style(make_css(list('.box', 
+                                     c('font-size', 'font-family', 'color'), 
+                                     c('16px', 'georgia', 'black')))),
+            fluidRow(box("Overview Data: ", "https://covidtracking.com/api/v1/states/ga/daily.csv", href = 'https://covidtracking.com/api/v1/states/ga/daily.csv')),
+            fluidRow(box("Today Covid-19 data: ", "https://dph.georgia.gov/covid-19-daily-status-report", href = "https://dph.georgia.gov/covid-19-daily-status-report")),
+            fluidRow(box("Data Tracking: ", "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv", href = "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv")),
+            fluidRow(box("MAGE model created by Dr. Stephen Beckett & Dr. Joshua Weitz's Group: ", "https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git", href = 'https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git'))
+    )
+  )
+)
+
+ui <- dashboardPage(skin = "red",
+                    dashboardHeader(title = "My Dashboard",
+                                    titleWidth = 350,
+                                    dropdownMenu(type = "notifications",
+                                                 notificationItem(
+                                                   textOutput("counter"),
+                                                   icon("users")
+                                                 ),
+                                                 notificationItem(
+                                                   text = "12 items delivered",
+                                                   icon("truck"),
+                                                   status = "success"
+                                                 ),
+                                                 notificationItem(
+                                                   text = "Server load at 86%",
+                                                   icon = icon("exclamation-triangle"),
+                                                   status = "warning"
+                                                 )
+                                    )),
+                    sidebar,
+                    body
+)
+
+server <- function(input,output){
+  output$messageMenu <- renderMenu({
+    # Code to generate each of the messageItems here, in a list. This assumes
+    # that messageData is a data frame with two columns, 'from' and 'message'.
+    msgs <- apply(messageData, 1, function(row) {
+      messageItem(from = row[["from"]], message = row[["message"]])
+    })
+    
+    # This is equivalent to calling:
+    #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
+    dropdownMenu(type = "messages", .list = msgs)
+  })
+  nvisitors = reactiveVal(0)
+  nvisitors(isolate(nvisitors()) + 1)
+  onSessionEnded(function(x){ 
+    nvisitors(isolate(nvisitors()) - 1)
+  })
+  
+  output$counter = renderText({
+    paste0("Views: ",nvisitors())
+  })
+  # OVERVIEW TABs
+  positive_total <- reactive({overviewData[which(overviewData$county_resident == input$county),2]})
+  death_total <- reactive({overviewData[which(overviewData$county_resident == input$county),3]})
+  hospitalization_total <- reactive({overviewData[which(overviewData$county_resident == input$county),4]})
+  death_ratio <- reactive({round(((overviewData[which(overviewData$county_resident == input$county),3])/(overviewData[which(overviewData$county_resident == input$county),2]))*100,2)})
+  
+  output$PositiveBox <- renderValueBox({
+    valueBox(
+      paste0(positive_total()),"Georgia Positive Cases", icon = icon("head-side-virus"), 
+      color = 'red')
+  })
+  
+  output$DeathBox <- renderValueBox({
+    valueBox(
+      paste0(death_total()), "Georgia Deaths",icon = icon("skull"), 
+      color = 'purple')
+  })
+  
+  output$HospitalizationBox <- renderValueBox({
+    valueBox(
+      paste0(hospitalization_total()), "Georgia Hospitalizations", icon = icon("procedures"), 
+      color = 'blue')
+  })
+  
+  output$DeathRatioBox <- renderValueBox({
+    valueBox(
+      paste0(death_ratio()),"Georgia Death Ratio", icon = icon("skull-crossbones"), 
+      color = 'maroon')
+  })
+  output$TopTable <- renderDataTable(topTable, options = list(pageLength = 15, info = FALSE))
+  output$dailyGrowth <- renderPlotly(fig)
+  output$StateRank <- renderPlotly(state_ranking)
+  
+  output$USPositiveBox <- renderValueBox({
+    valueBox(
+      US_total_Positive, "USA Positive Cases", icon = icon("head-side-virus"),
+      color = 'red')
+  })
+  output$USDeathBox <- renderValueBox({
+    valueBox(
+      US_total_Death, "USA Deaths",icon = icon("skull"), 
+      color = 'purple')
+  })
+  output$USDeathRatioBox <- renderValueBox({
+    valueBox(
+      round((US_total_Death/US_total_Positive)*100,2),"USA Death Ratio", icon = icon("skull-crossbones"), 
+      color = 'maroon')
+  })
+  
+  ##### MAPS TABS
+  output$PositiveMap <- renderPlotly(positive_map)
+  output$DeathMap <- renderPlotly(death_map)
+  output$HospitalizationMap <- renderPlotly(hospitalization_map)
+  
+  # output$PositiveGIF <- renderImage({
+  #   tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
+  # })  
+  #output$PositiveGIF <- renderImage({
+   # tmpfile <- mapanim
+    #list(src = tmpfile, contentType ="image/jpeg")
+  #})
+  
+  ##### MAGE TABS
+  output$SusceptPro <- renderPlotly(positive_plot)
+  output$NCperday <- renderPlotly(NCperday_plot)
+  output$DeathPro <- renderPlotly(death_plot)
+  output$Dperday <- renderPlotly(Dperday_plot)
+  output$Hospitalization <- renderPlotly(hospitalization_plot)
+  output$ICU <- renderPlotly(ICU_plot)
+  
+  
+  ##### FACTORS TABs
+  output$Age <- renderPlotly(age_fig)
+  output$Gender <- renderPlotly(sex_fig)
+  output$Race <- renderggiraph(race_fig)
+  output$Combined <- renderPlotly(factors_fig)
+}
+
 shinyApp(ui = ui, server = server)
+
