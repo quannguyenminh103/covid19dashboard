@@ -14,6 +14,7 @@
 # install.packages('packcircles')
 # install.packages('ggiraph')
 # install.packages('giphyr')
+# install.packages('RColorBrewer')
 
 library(shiny)
 library(shinydashboard)
