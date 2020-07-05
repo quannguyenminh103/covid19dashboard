@@ -48,12 +48,13 @@ source('./demographicsData.R')
 overviewData = read.csv('./dataInput/countycases.csv', as.is = TRUE)
 dailyData = read.csv('./dataInput/daily.csv', as.is = TRUE)
 
-dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
-
+USdataTracking = read.csv(url('https://covidtracking.com/api/v1/us/daily.csv'))
+head(USdataTracking)
 ### OVERVIEW TABS:
 overviewData <- rbind(overviewData, data.frame(county_resident = "All", t(colSums(overviewData[, -c(1,5)])), case_rate = mean(overviewData$case_rate)))
 overviewData <- overviewData[order(overviewData$county_resident),]
-head(overviewData)
+
+
 county_list <- unique(overviewData$county_resident)
 
 ###  ASSEMBLE THE WEBSITE CONTENTs
@@ -85,9 +86,11 @@ body <- dashboardBody(
                       valueBoxOutput("HospitalizationBox", width = 3)
             ),
             fluidRow( class = 'text-center',
-                      valueBoxOutput("USPositiveBox", width = 4),
-                      valueBoxOutput("USDeathBox", width = 4),
-                      valueBoxOutput("USDeathRatioBox", width = 4),
+                      valueBoxOutput("USPositiveBox", width = 3),
+                      valueBoxOutput("USDeathBox", width = 3),
+                      valueBoxOutput("USDeathRatioBox", width = 3),
+                      valueBoxOutput("USHospitalizationBox", width = 3),
+                      
                       
             ),
             fluidRow(class = 'text-center',
@@ -104,7 +107,7 @@ body <- dashboardBody(
               box(width = 4,plotlyOutput('HospitalizationMap'))
             ),
             fluidRow(
-              box(width = 6, img(src="GAConfirmedCasesMap.gif"))
+              box(width = 6, img(src="GAConfirmedCasesMap.gif", align = 'center', height = '400px', width = '700px'))
               #plotlyOutput('PositiveGIF')
             )
     ),
@@ -181,20 +184,16 @@ server <- function(input,output){
     #   dropdownMenu(type="messages", msgs[[1]], msgs[[2]], ...)
     dropdownMenu(type = "messages", .list = msgs)
   })
-  nvisitors = reactiveVal(0)
-  nvisitors(isolate(nvisitors()) + 1)
-  onSessionEnded(function(x){ 
-    nvisitors(isolate(nvisitors()) - 1)
-  })
-  
-  output$counter = renderText({
-    paste0("Views: ",nvisitors())
-  })
   # OVERVIEW TABs
   positive_total <- reactive({overviewData[which(overviewData$county_resident == input$county),2]})
   death_total <- reactive({overviewData[which(overviewData$county_resident == input$county),3]})
   hospitalization_total <- reactive({overviewData[which(overviewData$county_resident == input$county),4]})
   death_ratio <- reactive({round(((overviewData[which(overviewData$county_resident == input$county),3])/(overviewData[which(overviewData$county_resident == input$county),2]))*100,2)})
+  
+  US_Confirmed_Total <- reactive({USdataTracking$positive[1]})
+  US_Death_Total <- reactive({USdataTracking$death[1]})
+  US_Hospitalization_Total <- reactive({USdataTracking$hospitalizedCumulative[1]})
+  US_Death_ratio <- reactive({round((USdataTracking$death[1]/USdataTracking$positive[1])*100,2)})
   
   output$PositiveBox <- renderValueBox({
     valueBox(
@@ -225,18 +224,23 @@ server <- function(input,output){
   
   output$USPositiveBox <- renderValueBox({
     valueBox(
-      US_total_Positive, "USA Positive Cases", icon = icon("head-side-virus"),
+      US_Confirmed_Total(), "USA Positive Cases", icon = icon("head-side-virus"),
       color = 'red')
   })
   output$USDeathBox <- renderValueBox({
     valueBox(
-      US_total_Death, "USA Deaths",icon = icon("skull"), 
+      US_Death_Total(), "USA Deaths",icon = icon("skull"), 
       color = 'purple')
   })
   output$USDeathRatioBox <- renderValueBox({
     valueBox(
-      round((US_total_Death/US_total_Positive)*100,2),"USA Death Ratio", icon = icon("skull-crossbones"), 
+      US_Death_ratio(),"USA Death Ratio", icon = icon("skull-crossbones"), 
       color = 'maroon')
+  })
+  output$USHospitalizationBox <- renderValueBox({
+    valueBox(
+      US_Hospitalization_Total(),"USA Death Ratio", icon = icon("procedures"), 
+      color = 'blue')
   })
   
   ##### MAPS TABS
