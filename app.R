@@ -40,9 +40,10 @@ library(tableHTML)
 
 source('./tabletop10.R')
 source('./livelyPDH.R')
-source('./newMap.R')
+#source('./newMap.R')
 source('./rank_by_state.R')
 source('./lineChart.R')
+source('./eventUSMap.R')
 source('./multiplelinecharts.R')
 source('./demographicsData.R')
 
@@ -108,8 +109,15 @@ body <- dashboardBody(
               box(width = 4,plotlyOutput('HospitalizationMap'))
             ),
             fluidRow(
-              box(width = 6, img(src="GAConfirmedCasesMap.gif", align = 'center', height = '400px', width = '700px'))
-              #plotlyOutput('PositiveGIF')
+              box(width = 12, img(src="GAConfirmedCasesMap.gif"), align = 'center')
+            ),
+            
+            fluidRow(
+              box(width = 12, numericInput('number',"Choose a number of people",10,min = 1), align = 'center'),
+            ),
+            fluidRow(),
+            fluidRow(
+              box(width = 12, plotlyOutput('RiskyMap'), align = 'center')
             )
     ),
     tabItem(tabName = 'factors',
@@ -142,10 +150,10 @@ body <- dashboardBody(
             tags$style(make_css(list('.box', 
                                      c('font-size', 'font-family', 'color'), 
                                      c('16px', 'georgia', 'black')))),
-            fluidRow(box("Overview Data: ", "https://covidtracking.com/api/v1/states/ga/daily.csv", href = 'https://covidtracking.com/api/v1/states/ga/daily.csv')),
-            fluidRow(box("Today Covid-19 data: ", "https://dph.georgia.gov/covid-19-daily-status-report", href = "https://dph.georgia.gov/covid-19-daily-status-report")),
-            fluidRow(box("Data Tracking: ", "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv", href = "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv")),
-            fluidRow(box("MAGE model created by Dr. Stephen Beckett & Dr. Joshua Weitz's Group: ", "https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git", href = 'https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git'))
+            fluidRow(box(uiOutput('OVData'))),
+            fluidRow(box(uiOutput("todayData"))),
+            fluidRow(box(uiOutput('dataTracking'))),
+            fluidRow(box(uiOutput('MAGEData')))
     )
   )
 )
@@ -249,14 +257,14 @@ server <- function(input,output){
   output$DeathMap <- renderPlotly(death_map)
   output$HospitalizationMap <- renderPlotly(hospitalization_map)
   
-  # output$PositiveGIF <- renderImage({
-  #   tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
-  # })  
-  #output$PositiveGIF <- renderImage({
-   # tmpfile <- mapanim
-    #list(src = tmpfile, contentType ="image/jpeg")
-  #})
+  output$PositiveGIF <- renderImage({
+    tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
+  })
   
+  output$RiskyMap <- renderPlotly({
+    riskyScoreMap(input$number)
+  })
+
   ##### MAGE TABS
   output$SusceptPro <- renderPlotly(positive_plot)
   output$NCperday <- renderPlotly(NCperday_plot)
@@ -271,6 +279,18 @@ server <- function(input,output){
   output$Gender <- renderPlotly(sex_fig)
   output$Race <- renderggiraph(race_fig)
   output$Combined <- renderPlotly(factors_fig)
+  
+  #### Data Resources Tabs
+  url1 <- a("Overview Data", href = 'https://covidtracking.com/api/v1/states/ga/daily.csv')
+  url2 <- a("Today Covid-19 data", href = "https://dph.georgia.gov/covid-19-daily-status-report")
+  url3 <- a("Data Tracking",href = "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv")
+  url4 <- a("MAGE model created by Dr. Stephen Beckett & Dr. Joshua Weitz's Group",href = 'https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git')
+
+  output$OVData <- renderUI({tagList(url1)})
+  output$todayData <- renderUI({tagList(url2)})
+  output$dataTracking <- renderUI({tagList(url3)})
+  output$MAGEData <- renderUI({tagList(url4)})
+  
 }
 
 shinyApp(ui = ui, server = server)
