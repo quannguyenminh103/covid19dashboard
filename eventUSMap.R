@@ -8,13 +8,6 @@ library(stringr)
 library(Hmisc)
 #library(ggmap)
 library(ggthemes)
-library(usmap)
-library(tmap)
-
-plot_usmap(regions = 'counties')
-# get the data for Georgia Map
-USmap <- map_data('county')
-#head(USmap)
 
 ##########################################################
 dataTracking = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
@@ -81,13 +74,9 @@ state_df <- state_df %>%
   )
 
 #state_df$fips <- toString(state_df$fips)
-length(unique(state_df$County))
 
 df <- inner_join(state_df,unemp, by = 'fips')
 
-###############
-final_df$County <- capitalize(final_df$County)
-final_df$State <- capitalize(final_df$State)
 riskyScoreMap <- function(g){
   risk <- as.data.frame(1-(1-10*(df$Today_Positive-df$Past_Positive)/df$pop)^g)
   df[,9] <- risk
@@ -98,17 +87,12 @@ riskyScoreMap <- function(g){
   ###############
   final_df$County <- capitalize(final_df$County)
   final_df$State <- capitalize(final_df$State)
-  #gg_today <- ggplot()
-  #gg_today <- gg_today + geom_map(data=county, map=county,
-                                  #aes(long, lat, map_id=region),
-                                  #color="black", fill=NA, size=0.15)
-  #gg_today <- gg_today + coord_map("polyconic")
-  #gg_today <- gg_today + theme_map()
-  #gg_today <- gg_today + theme(plot.margin=margin(20,20,20,20))
-  
-  risky_map <- ggplot() + geom_polygon( data=county, aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',final_df$County, "<br>", "<b>Risky Score: </b>",round(final_df$risk*100,2), "<br>",
-                                                                                             "<b>Confirmed Cases: </b>", final_df$Today_Positive), fill = final_df$risk), 
-                                         color="black", size = 0.2) 
+  gg <- ggplot(data = county,mapping = aes(x = long, y = lat, group = group)) +
+    geom_polygon(fill = 'white', color = 'black')
+  risky_map <- gg + geom_polygon( data=final_df, aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',County, "<br>", "<b>Risky Score: </b>",round(risk*100,2), "<br>",
+                                                                                             "<b>Confirmed Cases: </b>", Today_Positive), fill = risk), 
+                                         color="black", size = 0.2) +
+    geom_blank(data = county, mapping = aes(x = long, y = lat))
   risky_map <- risky_map + scale_fill_continuous(low = 'lemonchiffon', high = 'firebrick', limits = c(0,max(final_df$risk)), 
                                                    breaks= quantile(final_df[,'risk'],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1)),
                                                    na.value = "grey50") +
@@ -123,4 +107,3 @@ riskyScoreMap <- function(g){
     ) 
   return(risky_map)
 }
-
