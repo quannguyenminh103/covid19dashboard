@@ -91,8 +91,7 @@ riskyScoreMap <- function(g){
     geom_polygon(fill = 'white', color = 'black')
   risky_map <- gg + geom_polygon( data=final_df, aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',County, "<br>", "<b>Risky Score: </b>",round(risk*100,2), "<br>",
                                                                                              "<b>Confirmed Cases: </b>", Today_Positive), fill = risk), 
-                                         color="black", size = 0.2) +
-    geom_blank(data = county, mapping = aes(x = long, y = lat))
+                                         color="black", size = 0.2, na.rm = TRUE)
   risky_map <- risky_map + scale_fill_continuous(low = 'lemonchiffon', high = 'firebrick', limits = c(0,max(final_df$risk)), 
                                                    breaks= quantile(final_df[,'risk'],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1)),
                                                    na.value = "grey50") +
