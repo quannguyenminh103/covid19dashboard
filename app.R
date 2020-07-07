@@ -59,9 +59,7 @@ overviewData = read.csv('./dataInput/countycases.csv', as.is = TRUE)
 
 USdataTracking = read.csv(url('https://covidtracking.com/api/v1/us/daily.csv'))
 ### OVERVIEW TABS:
-overviewData <- rbind(overviewData, data.frame(county_resident = "All", t(colSums(overviewData[, -c(1,5)])), case_rate = mean(overviewData$case_rate)))
-overviewData <- overviewData[order(overviewData$county_resident),]
-
+overviewData <- rbind(data.frame(county_resident = "Georgia", t(colSums(overviewData[, -c(1,5)])), case_rate = mean(overviewData$case_rate)),overviewData)
 
 county_list <- unique(overviewData$county_resident)
 
@@ -219,25 +217,25 @@ server <- function(input,output){
   
   output$PositiveBox <- renderValueBox({
     valueBox(
-      paste0(positive_total()),"Georgia Positive Cases", icon = icon("head-side-virus"), 
+      paste0(positive_total()), paste0(input$county," Positive Cases"), icon = icon("head-side-virus"), 
       color = 'red')
   })
   
   output$DeathBox <- renderValueBox({
     valueBox(
-      paste0(death_total()), "Georgia Deaths",icon = icon("skull"), 
+      paste0(death_total()), paste0(input$county," Deaths"),icon = icon("skull"), 
       color = 'purple')
   })
   
   output$HospitalizationBox <- renderValueBox({
     valueBox(
-      paste0(hospitalization_total()), "Georgia Hospitalizations", icon = icon("procedures"), 
+      paste0(hospitalization_total()), paste0(input$county," Hospitalizations"), icon = icon("procedures"), 
       color = 'blue')
   })
   
   output$DeathRatioBox <- renderValueBox({
     valueBox(
-      paste0(death_ratio()),"Georgia Death Ratio", icon = icon("skull-crossbones"), 
+      paste0(death_ratio()),paste0(input$county," Death Ratio"), icon = icon("skull-crossbones"), 
       color = 'maroon')
   })
   output$TopTable <- renderDataTable(topTable, options = list(pageLength = 15, info = FALSE))
@@ -261,7 +259,7 @@ server <- function(input,output){
   })
   output$USHospitalizationBox <- renderValueBox({
     valueBox(
-      US_Hospitalization_Total(),"USA Death Ratio", icon = icon("procedures"), 
+      US_Hospitalization_Total(),"USA Hospitalizations", icon = icon("procedures"), 
       color = 'blue')
   })
   
