@@ -26,7 +26,7 @@ MergedGA_today <- inner_join(GAmap, overviewData, by = c("subregion" = "county_r
 MergedGA_today$subregion = capitalize(MergedGA_today$subregion)
 
 ##########################################################
-dataTracking = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
+dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
 dataTracking$COUNTY_NAME <- tolower(dataTracking$COUNTY_NAME)
 dataTracking[which(dataTracking == 'dekalb', arr.ind = TRUE)] <- 'de kalb'
 #head(dataTracking)
