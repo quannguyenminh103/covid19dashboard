@@ -68,3 +68,25 @@ state_bar <- ggplot(df2, aes( fill = type,x = factor(top10State.State, levels = 
 state_ranking <- ggplotly(state_bar, tooltip = "text")
 state_ranking
 
+### NEW PROJECTION
+# head(USData)
+# 
+# count_bystate_day <- function(dataSet, state, rdate){
+#   subData <- dataSet[which(dataSet[,"State"] == state, arr.ind = TRUE),]
+#   subset <- subData[which(subData[,"date"] == rdate, arr.ind = TRUE),]
+#   positive_by_state_perD = sum(subset["Positive"])
+#   return(positive_by_state_perD)
+# }
+# state_list <- unique(USData$State)
+# day1 <- count_bystate_day(USData, state_list[1],as.Date('2020-07-01'))
+# day1
+# statisticsTable_day <- function(dataSet, rdate){
+#   first_state <- count_bystate(dataSet,state_list[1])
+#   state_df <- data.frame("State" = state_list[1],"Total_Positive_Cases" = unlist(first_state[1]),"Total_Death_Cases" = unlist(first_state[2]))
+#   for (val in 2:length(state_list)){
+#     new_state <- count_bystate(dataSet,state_list[val])
+#     state_df <- rbind(state_df,list(state_list[val],unlist(new_state[1]),unlist(new_state[2])))
+#   }
+#   return(state_df)
+# }
+# 
