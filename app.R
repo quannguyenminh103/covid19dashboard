@@ -18,7 +18,9 @@
 # install.packages('rsconnect')
 # install.packages('mapproj')
 # install.packages('RCurl')
-
+# install.packages('lobstr')
+# install.packages('profvis')
+library(profvis)
 library(shiny)
 library(shinydashboard)
 library(magick)
@@ -38,10 +40,11 @@ library(tidyverse)
 library(viridis)
 library(devtools)
 library(png)
-library(purrr)
+#library(purrr)
 library(packcircles)
 library(ggiraph)
 library(tableHTML)
+#library(lobstr)
 
 source('./tabletop10.R')
 source('./livelyPDH.R')
@@ -64,7 +67,7 @@ county_list <- unique(overviewData$county_resident)
 
 ###  ASSEMBLE THE WEBSITE CONTENTs
 
-sidebar <- dashboardSidebar(width = 350,
+sidebar <- dashboardSidebar(width = 300,
   sidebarMenu(
     menuItem("Overview", tabName = "overview", icon = icon("dashboard")),
     menuItem("Statistics Maps", icon = icon("map"), tabName = "maps",
@@ -78,7 +81,7 @@ sidebar <- dashboardSidebar(width = 350,
 
 body <- dashboardBody(
   tags$head( 
-    tags$style(HTML(".main-sidebar { font-size: 20px; }")) #change the font size to 20
+    tags$style(HTML(".main-sidebar { font-size: 15px; }")) #change the font size to 15
   ),
   tabItems(
     tabItem(tabName = "overview",
@@ -170,7 +173,7 @@ ui <- dashboardPage(skin = "red",
                                     title = HTML("<div style = 'background-color:black; vertical-align:middle'>
                     GEORGIA TECH COVID 19 DASHBOARD
                                  </div>"),
-                                    titleWidth = "95%",
+                                    titleWidth = "92%",
                                     dropdownMenu(type = "notifications",
                                                  notificationItem(
                                                    textOutput("counter"),
