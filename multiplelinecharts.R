@@ -7,7 +7,7 @@ library(Hmisc)
 library(stringr)
 library(ggthemes)
 library(viridis)
-library(rgdal)
+#library(rgdal)
 library(plotly)
 library(hrbrthemes)
 
