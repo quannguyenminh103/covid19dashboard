@@ -12,7 +12,7 @@ library(plotly)
 library(hrbrthemes)
 
 
-dailyData = read.csv('./dataInput/daily.csv', as.is = TRUE)
+dailyData = read.csv(url('https://covidtracking.com/api/v1/us/daily.csv'))
 baseline = read.csv('./dataInput/Baseline_data.csv', as.is = TRUE)
 transmission50 = read.csv('./dataInput/transmission50_data.csv', as.is = TRUE)
 transmission75 = read.csv('./dataInput/transmission75_data.csv', as.is = TRUE)
