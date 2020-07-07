@@ -74,6 +74,9 @@ sidebar <- dashboardSidebar(width = 350,
 )
 
 body <- dashboardBody(
+  tags$head( 
+    tags$style(HTML(".main-sidebar { font-size: 20px; }")) #change the font size to 20
+  ),
   tabItems(
     tabItem(tabName = "overview",
             fluidRow(
@@ -117,7 +120,7 @@ body <- dashboardBody(
             ),
             fluidRow(),
             fluidRow(
-              box(width = 12, plotlyOutput('RiskyMap'), align = 'center')
+              box(width = 12, plotlyOutput('RiskyMap'), align = 'center',height = 800)
             )
     ),
     tabItem(tabName = 'factors',
@@ -159,8 +162,12 @@ body <- dashboardBody(
 )
 
 ui <- dashboardPage(skin = "red",
-                    dashboardHeader(title = "My Dashboard",
-                                    titleWidth = 350,
+                    dashboardHeader(#title = "My Dashboard",
+                                    #titleWidth = 350,
+                                    title = HTML("<div style = 'background-color:black; vertical-align:middle'>
+                    GEORGIA TECH COVID 19 DASHBOARD
+                                 </div>"),
+                                    titleWidth = "95%",
                                     dropdownMenu(type = "notifications",
                                                  notificationItem(
                                                    textOutput("counter"),
@@ -262,8 +269,8 @@ server <- function(input,output){
   })
   
   output$RiskyMap <- renderPlotly({
-    riskyScoreMap(input$number)
-  })
+    riskyScoreMap(input$number)}
+    )
 
   ##### MAGE TABS
   output$SusceptPro <- renderPlotly(positive_plot)
@@ -281,9 +288,9 @@ server <- function(input,output){
   output$Combined <- renderPlotly(factors_fig)
   
   #### Data Resources Tabs
-  url1 <- a("Overview Data", href = 'https://covidtracking.com/api/v1/states/ga/daily.csv')
+  url1 <- a("Overview Data", href = 'https://covidtracking.com/api')
   url2 <- a("Today Covid-19 data", href = "https://dph.georgia.gov/covid-19-daily-status-report")
-  url3 <- a("Data Tracking",href = "https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv")
+  url3 <- a("Data Tracking",href = "https://covid19-lake.s3.us-east-2.amazonaws.com/dashboard.html?dashboardName=COVID-19")
   url4 <- a("MAGE model created by Dr. Stephen Beckett & Dr. Joshua Weitz's Group",href = 'https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git')
 
   output$OVData <- renderUI({tagList(url1)})
