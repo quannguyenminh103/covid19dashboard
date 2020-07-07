@@ -17,6 +17,7 @@
 # install.packages('RColorBrewer')
 # install.packages('rsconnect')
 # install.packages('mapproj')
+# install.packages('RCurl')
 
 library(shiny)
 library(shinydashboard)
@@ -51,10 +52,8 @@ source('./multiplelinecharts.R')
 source('./demographicsData.R')
 
 overviewData = read.csv('./dataInput/countycases.csv', as.is = TRUE)
-dailyData = read.csv('./dataInput/daily.csv', as.is = TRUE)
 
 USdataTracking = read.csv(url('https://covidtracking.com/api/v1/us/daily.csv'))
-head(USdataTracking)
 ### OVERVIEW TABS:
 overviewData <- rbind(overviewData, data.frame(county_resident = "All", t(colSums(overviewData[, -c(1,5)])), case_rate = mean(overviewData$case_rate)))
 overviewData <- overviewData[order(overviewData$county_resident),]
