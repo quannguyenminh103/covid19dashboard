@@ -15,6 +15,7 @@
 # install.packages('ggiraph')
 # install.packages('giphyr')
 # install.packages('RColorBrewer')
+# install.packages('rsconnect')
 
 library(shiny)
 library(shinydashboard)
