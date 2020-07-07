@@ -1,7 +1,7 @@
 library(tidyverse)
 library(dplyr)
 
-dataTracking = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
+dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
 
 USIndex <- which(dataTracking[,"COUNTRY_SHORT_NAME"] == 'United States', arr.ind = TRUE)
 USdataTracking <- dataTracking[USIndex,]
