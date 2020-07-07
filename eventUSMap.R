@@ -9,7 +9,7 @@ library(stringr)
 library(ggthemes)
 
 ##########################################################
-dataTracking = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
+dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
 #head(dataTracking)
 
 USIndex <- which(dataTracking[,10] == 'United States', arr.ind = TRUE)
