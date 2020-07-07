@@ -1,12 +1,12 @@
-library(magick)
-library(ggplot2)
-library(maps)
-library(dplyr)
-library(Hmisc)
-library(stringr)
-#library(ggmap)
-library(ggthemes)
-library(png)
+# library(magick)
+# library(ggplot2)
+# library(maps)
+# library(dplyr)
+# library(Hmisc)
+# library(stringr)
+# library(ggmap)
+# library(ggthemes)
+# library(png)
 
 # get the data for Georgia Map
 GAmap <- map_data('county', 'georgia')
@@ -73,10 +73,10 @@ georgiaData$date <- as.Date(georgiaData$date)
 # }
 # Read the individual maps into a data structure for use with 'magick'
 
-date_range <- seq(as.Date("2020-03-01"), Sys.Date()-1, "days")
-for (val in 1:length(date_range)){
-  create_png(toString(date_range[val]))
-}
+# date_range <- seq(as.Date("2020-03-01"), Sys.Date()-1, "days")
+# for (val in 1:length(date_range)){
+#   create_png(toString(date_range[val]))
+# }
 # GEORGIA CONFIRMED CASES MAP TODAY: c(2,100,300,500,700,800,1000,3000,5000,6000,7000,9000)
 positive_map_today <- ggplot() + geom_polygon( data=MergedGA_today, 
                                                          aes(x=long, y=lat, group=group, fill = Positive), 
