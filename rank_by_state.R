@@ -1,5 +1,5 @@
-library(tidyverse)
-library(dplyr)
+# library(tidyverse)
+# library(dplyr)
 
 dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
 
