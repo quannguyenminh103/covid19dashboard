@@ -20,7 +20,6 @@
 # install.packages('RCurl')
 # install.packages('lobstr')
 # install.packages('profvis')
-library(profvis)
 library(shiny)
 library(shinydashboard)
 library(magick)
@@ -44,7 +43,10 @@ library(png)
 library(packcircles)
 library(ggiraph)
 library(tableHTML)
-#library(lobstr)
+library(leaflet)
+library(sf)
+library(data.table)
+
 
 source('./tabletop10.R')
 source('./livelyPDH.R')
@@ -108,23 +110,23 @@ body <- dashboardBody(
                      box(plotlyOutput('StateRank', height = 350))
             )
     ),
-    
+
     tabItem(tabName = "maps",
             fluidRow(
-              box(width = 4, plotlyOutput('PositiveMap')),
-              box(width = 4,plotlyOutput('DeathMap')),
-              box(width = 4,plotlyOutput('HospitalizationMap'))
+              box(width = 4, leafletOutput('PositiveMap')),
+              box(width = 4,leafletOutput('DeathMap')),
+              box(width = 4,leafletOutput('HospitalizationMap'))
             ),
             fluidRow(
               box(width = 12, img(src="GAConfirmedCasesMap.gif"), align = 'center')
             ),
-            
+
             fluidRow(
               box(width = 12, numericInput('number',"Choose a number of people",10,min = 1), align = 'center'),
             ),
             fluidRow(),
             fluidRow(
-              box(width = 12, plotlyOutput('RiskyMap'), align = 'center',height = 800)
+              box(width = 12, leafletOutput('RiskyMap', height = "800px"), align = 'center',height = 800)
             )
     ),
     tabItem(tabName = 'factors',
@@ -160,7 +162,8 @@ body <- dashboardBody(
             fluidRow(box(uiOutput('OVData'))),
             fluidRow(box(uiOutput("todayData"))),
             fluidRow(box(uiOutput('dataTracking'))),
-            fluidRow(box(uiOutput('MAGEData')))
+            fluidRow(box(uiOutput('MAGEData'))),
+            fluidRow(box(uiOutput('USEventMap')))
     )
   )
 )
@@ -264,16 +267,16 @@ server <- function(input,output){
   })
   
   ##### MAPS TABS
-  output$PositiveMap <- renderPlotly(positive_map)
-  output$DeathMap <- renderPlotly(death_map)
-  output$HospitalizationMap <- renderPlotly(hospitalization_map)
-  
+  output$PositiveMap <- renderLeaflet(livelyMap('Positive','Confirmed Cases',"YlOrRd"))
+  output$DeathMap <- renderLeaflet(livelyMap('DEATHS',"Death Cases", "YlGnBu"))
+  output$HospitalizationMap <- renderLeaflet(livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd"))
+
   output$PositiveGIF <- renderImage({
     tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
   })
   
-  output$RiskyMap <- renderPlotly({
-    riskyScoreMap(input$number)}
+  output$RiskyMap <- renderLeaflet({
+    eventMap(input$number)}
     )
 
   ##### MAGE TABS
@@ -296,12 +299,12 @@ server <- function(input,output){
   url2 <- a("Today Covid-19 data", href = "https://dph.georgia.gov/covid-19-daily-status-report")
   url3 <- a("Data Tracking",href = "https://covid19-lake.s3.us-east-2.amazonaws.com/dashboard.html?dashboardName=COVID-19")
   url4 <- a("MAGE model created by Dr. Stephen Beckett & Dr. Joshua Weitz's Group",href = 'https://github.com/WeitzGroup/MAGEmodel_covid19_GA.git')
-
+  url5 <- a("US Risky Score Map stimulated by Lee Seolha, School of City & Regional Plan, Georgia Tech", href = "https://covid19risk.biosci.gatech.edu/")
   output$OVData <- renderUI({tagList(url1)})
   output$todayData <- renderUI({tagList(url2)})
   output$dataTracking <- renderUI({tagList(url3)})
   output$MAGEData <- renderUI({tagList(url4)})
-  
+  output$USEventMap <- renderUI({tagList(url5)})
 }
 
 shinyApp(ui = ui, server = server)
