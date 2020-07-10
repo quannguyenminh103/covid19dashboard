@@ -56,7 +56,7 @@ positive_map_today <- ggplot() + geom_polygon( data=MergedGA_today,
                                                aes(x=long, y=lat, group=group, fill = Positive), 
                                                color="black", size = 0.2)
 positive_map_today <- positive_map_today + scale_fill_gradientn(name= "Level of Positive Cases", 
-                                                                colors = c("lemonchiffon","tan1","orange","chocolate1","darkorange","darkorange3","coral", "red", "orangered","red4","darkred","firebrick"),
+                                                                colors = c("lemonchiffon","tan1","orange","chocolate1","darkorange","coral","red","darkorange3", "orangered","red4","darkred","firebrick"),
                                                                 limits = c(0,max(MergedGA_today$Positive)),breaks = bins, na.value = "grey50") +
   coord_map() + theme_map() +  
   labs(title=paste('Georgia Confirmed Cases (', Sys.Date(), ')', sep='')) +
@@ -69,7 +69,7 @@ ggsave(paste('./www/PositiveMap/PC_GA_Map_', Sys.Date(), '.png', sep=''),
 #   subData <- georgiaData[which(georgiaData[,"date"] == rdate),]
 #   return(subData)
 # }
-############### CREATE A SERIES OF IMAGES FROM THE PAST UNTIL NOW -1 
+# ############## CREATE A SERIES OF IMAGES FROM THE PAST UNTIL NOW -1
 # create_png <- function(rdate){
 #   # draw base map
 #   subdata <- statistics(rdate)
@@ -79,7 +79,7 @@ ggsave(paste('./www/PositiveMap/PC_GA_Map_', Sys.Date(), '.png', sep=''),
 #                                                aes(long, lat, group=group, fill = Positive),
 #                                                color="black", size = 0.2)
 #   positive_map <- positive_map +  scale_fill_gradientn(name= "Level of Positive Cases",
-#                                                       colors = c("lemonchiffon","tan1","orange","chocolate1","darkorange","darkorange3","coral", "red", "orangered","red4","darkred","firebrick"),
+#                                                       colors = c("lemonchiffon","tan1","orange","chocolate1", "darkorange","coral","red","darkorange3", "orangered","red4","darkred","firebrick"),
 #                                                       limits = c(0,max(MergedGA_today$Positive)),breaks = bins, na.value = "grey50") +
 #     coord_map() + theme_map() +
 #     labs(title=paste('Georgia Confirmed Cases (', rdate, ')', sep='')) +
