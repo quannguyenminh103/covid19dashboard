@@ -1,18 +1,21 @@
-# library(magick)
-# library(ggplot2)
-# library(plotly)
-# library(maps)
 # library(dplyr)
 # library(Hmisc)
 # library(stringr)
-# #library(ggmap)
 # library(ggthemes)
+# library(data.table)
+# library(RColorBrewer)
+# library(leaflet)
+# library(sf)
+
+dataTracking = fread('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv')
+county <<- st_read("https://raw.githubusercontent.com/appliedbinf/covid19-event-risk-planner/b96fa86886b1f7b9c62ed2853bd07c7bcdaa7f0a/COVID19-Event-Risk-Planner/map_data/tl_2017_us_county.geojson") 
+stateline <<- st_read("https://raw.githubusercontent.com/appliedbinf/covid19-event-risk-planner/b96fa86886b1f7b9c62ed2853bd07c7bcdaa7f0a/COVID19-Event-Risk-Planner/map_data/tl_2017_us_state.geojson")
+pop <- read.csv("https://raw.githubusercontent.com/appliedbinf/covid19-event-risk-planner/b96fa86886b1f7b9c62ed2853bd07c7bcdaa7f0a/COVID19-Event-Risk-Planner/map_data/county-population.csv", stringsAsFactors = FALSE)
 
 ##########################################################
-dataTracking = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
-#head(dataTracking)
+dataTracking <- as.data.frame(dataTracking)
+USIndex <- which(dataTracking[,10] == 'United States')
 
-USIndex <- which(dataTracking[,10] == 'United States', arr.ind = TRUE)
 USdataTracking <- dataTracking[USIndex,]
 USData <- USdataTracking[,c(2,4,3,8,1)]
 # turn all counties into lowercase
@@ -32,29 +35,21 @@ USData$date <- as.Date(USData$date)
 USData$County <- tolower(USData$County)
 USData$State <- tolower(USData$State)
 
-databyState_today <- function(state){
+databyState <- function(state, num){
   subData <- USData[which(USData[,"State"] == state),]
   subData <- subData[rev(order(subData$date)),]
-  todayData <- subData[which(subData[,'date'] == subData$date[1]),]
+  dateSelected <- subData$date[1] - num
+  todayData <- subData[which(subData[,'date'] == dateSelected),]
   todayData <- todayData[order(todayData$County),]
   return(todayData)
 }
 
-databyState_twoWeeksago <- function(state){
-  subData <- USData[which(USData[,"State"] == state),]
-  subData <- subData[rev(order(subData$date)),]
-  twoWeeksago <- subData$date[1] - 14
-  pastData <- subData[which(subData[,'date'] == twoWeeksago),]
-  pastData <- pastData[order(pastData$County),]
-  return(pastData)
-}
-state_df_today <- databyState_today(USData$State[1])
-state_df_past <- databyState_twoWeeksago(USData$State[1])
-
+state_df_today <- databyState(USData$State[1],0)
+state_df_past <- databyState(USData$State[1],14)
 
 for (i in 2:length(unique(USData$State))){
-  state_df_today <- rbind(state_df_today, databyState_today(unique(USData$State)[i]))
-  state_df_past <- rbind(state_df_past, databyState_twoWeeksago(unique(USData$State)[i]))
+  state_df_today <- rbind(state_df_today, databyState(unique(USData$State)[i],0))
+  state_df_past <- rbind(state_df_past, databyState(unique(USData$State)[i],14))
 }
 state_df_today <- state_df_today[order(state_df_today$State),]
 state_df_past <- state_df_past[order(state_df_past$State),]
@@ -71,39 +66,81 @@ state_df <- state_df %>%
     Past_Positive = names(state_df)[6]
   )
 
-#state_df$fips <- toString(state_df$fips)
+df <- inner_join(state_df,pop, by = 'fips')
 
-df <- inner_join(state_df,unemp, by = 'fips')
+df$County <- capitalize(df$County)
+df$State <- capitalize(df$State)
 
-riskyScoreMap <- function(g){
-  risk <- as.data.frame(1-(1-10*(df$Today_Positive-df$Past_Positive)/df$pop)^g)
+head(county)
+eventMap <- function(size){
+  risk <- as.data.frame(round((1-(1-10*(df$Today_Positive-df$Past_Positive)/df$pop)**size)*100,2))
   df[,9] <- risk
   names(df)[9] <- 'risk'
   
-  county <- map_data('county')
-  final_df <- inner_join(df,county, by = c("County" = 'subregion'))
   ###############
-  final_df$County <- capitalize(final_df$County)
-  final_df$State <- capitalize(final_df$State)
-  gg <- ggplot(data = county,mapping = aes(x = long, y = lat, group = group)) +
-    geom_polygon(fill = 'white', color = 'black')
-  risky_map <- gg + geom_polygon( data=final_df, aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',County, "<br>",
-                                                                                                     "<b>State: </b>",State, "<br>",
-                                                                                                     "<b>Risky Score: </b>",round(risk*100,2), "<br>",
-                                                                                             "<b>Confirmed Cases: </b>", Today_Positive), fill = risk), 
-                                         color="black", size = 0.2, na.rm = TRUE)
-  risky_map <- risky_map + scale_fill_continuous(low = 'lemonchiffon', high = 'firebrick', limits = c(0,max(final_df$risk)), 
-                                                   breaks= quantile(as.numeric(final_df[,'risk']),c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1), na.rm = TRUE),
-                                                   na.value = "grey50") +
-    coord_map("polyconic") + theme_map() +
-    labs(title=paste0("Risky Score US County Level Map for a Big Event with ", g, ' Person(s)')) + theme(legend.position = "none") + 
-    theme(plot.title = element_text(face = "bold")) + guides(fill = FALSE) +
-    theme(plot.title = element_text(hjust=0.4))
-  risky_map <- ggplotly(risky_map, tooltip = 'text', height = 800, width = 1000) %>%
-    highlight(
-      "plotly_hover",
-      selected = attrs_selected(line = list(color = "black"))
-    ) 
-  return(risky_map)
+  df <- df[,c("County","State","date","fips","Today_Positive","risk")]
+  
+  df <- inner_join(county,df, by = c("GEOID" = "fips"))
+  
+  bins <- c(0,1,25,50,75,99,100)
+  
+  pal <- colorBin("YlOrRd", domain = df$risk, bins = bins, na.color = 'grey')
+  
+  labels <- sprintf(
+    "<strong>County: %s</strong><br/>State: %s<br/>Risk Score: %g%%<br/>Confirmed Cases: %g",
+    df$County, df$State, df$risk, df$Today_Positive
+  ) %>% lapply(htmltools::HTML)
+  labels_Missing <-sprintf(
+    "<strong>County: %s</strong><br/>State: %s<br/>Risk Score: Missing Data",
+    county$NAME, county$stname
+  ) %>% lapply(htmltools::HTML)
+  leaflet(df) %>%
+    setView(-96, 37.8, 4) %>%
+    addProviderTiles(providers$CartoDB.Positron) %>%
+    addPolygons(
+      data = county,
+      fillColor = 'grey',
+      weight = 0.5,
+      opacity = 1,
+      color = "black",
+      dashArray = "3",
+      fillOpacity = 0.7,
+      highlight = highlightOptions(
+        weight = 5,
+        color = "#666",
+        dashArray = "",
+        fillOpacity = 0.7,
+        bringToFront = TRUE),
+      label = labels_Missing,
+      labelOptions = labelOptions(
+        style = list("font-weight" = "normal", padding = "3px 8px"),
+        textsize = "15px",
+        direction = "auto")
+    ) %>%
+    addPolygons(
+      fillColor = ~pal(risk),
+      weight = 0.5,
+      opacity = 1,
+      color = "black",
+      dashArray = "3",
+      fillOpacity = 0.7,
+      highlight = highlightOptions(
+        weight = 5,
+        color = "#666",
+        dashArray = "",
+        fillOpacity = 0.7,
+        bringToFront = TRUE),
+      label = labels,
+      labelOptions = labelOptions(
+        style = list("font-weight" = "normal", padding = "3px 8px"),
+        textsize = "15px",
+        direction = "auto")) %>%
+    addPolygons(
+      data = stateline,
+      fill = FALSE,
+      color = 'black',
+      weight = 1
+    ) %>%
+    addLegend(pal = pal, values = ~df$risk, opacity = 0.7, title = 'Risk Score (%)',
+              position = "bottomright")
 }
-
