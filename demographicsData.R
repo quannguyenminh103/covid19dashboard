@@ -3,10 +3,8 @@ library(plyr)
 library(dplyr)
 # library(Hmisc)
 # library(stringr)
-# #library(ggmap)
 # library(ggthemes)
 # library(viridis)
-# #library(rgdal)
 # library(plotly)
 # library(packcircles)
 # library(ggiraph)
@@ -55,6 +53,18 @@ for (i in 1:length(age)){
 }
 # Convert back into the data frame
 demographicsData$age <- age
+
+### Set up the font
+f <- list(
+  family = "Georgia, monospace",
+  size = 18,
+  color = "#7f7f7f"
+)
+y <- list(
+  title = "Number of Deaths",
+  titlefont = f
+)
+
 # Count how many deaths in each group of age
 
 ## AGE
@@ -62,25 +72,40 @@ ageFreq <- table(demographicsData$age)
 ageFreq <- as.data.frame(ageFreq)
 names(ageFreq)[1] <- 'Age'
 
-age_plot <- ggplot(data = ageFreq) +
-  geom_bar(aes(x = Age, y = Freq, text = paste0('<b>Age: </b>',Age,'<br>','<b>Number of Deaths: </b>',Freq)), stat = 'identity', fill ='orange', color = 'black')+
-  geom_text(aes(x = Age, y = Freq, label = paste0('<b>',Freq)),position=position_stack(vjust=0.5)) +
-  labs(title = 'Number of Deaths by Age', y = 'Number of Deaths') + guides(fill = FALSE)
-age_fig <- ggplotly(age_plot, tooltip = 'text')
-age_fig
+x_age <- list(
+  title = 'Age',
+  titlefont = f
+)
 
+age_fig <- plot_ly(ageFreq, x = ~Age, y = ~Freq, type = 'bar', color = I('orange'),hoverinfo = 'text',
+                   text = ~paste0('<b>Age: </b>',Age,'<br>','<b>Number of Deaths: </b>',Freq))
+age_fig <- age_fig %>% layout(
+  title = 'Number of Deaths by Age',
+  xaxis = x_age,
+  yaxis = y
+) %>%
+  add_text(text=ageFreq$Freq, textposition = 'top', showlegend = FALSE,
+           textfont=list(size=15, color="black"))
+
+# SEX
 sexFreq <- table(demographicsData$sex)
 sexFreq <- as.data.frame(sexFreq)
 names(sexFreq)[1] <- 'Sex'
 
-# SEX
-sex_plot <- ggplot(data = sexFreq) +
-  geom_bar(aes(x = Sex, y = Freq, text = paste0('<b>Sex: </b>',Sex,'<br>','<b>Number of Deaths: </b>',Freq)), stat = 'identity', fill ='orange', color = 'black')+
-  geom_text(aes(x = Sex, y = Freq, label = paste0('<b>',Freq)),position=position_stack(vjust=0.5)) +
-  labs(title = 'Number of Deaths by Sex', y = 'Number of Deaths') + guides(fill = FALSE)
-sex_fig <- ggplotly(sex_plot, tooltip = 'text')
-sex_fig
+x_sex <- list(
+  title = 'Gender',
+  titlefont = f
+)
 
+sex_fig <- plot_ly(sexFreq, x = ~Sex, y = ~Freq, type = 'bar', color = I('magenta'),hoverinfo = 'text',
+                   text = ~paste0('<b>Gender: </b>',Sex,'<br>','<b>Number of Deaths: </b>',Freq))
+sex_fig <- sex_fig %>% layout(
+  title = 'Number of Deaths by Gender',
+  xaxis = x_sex,
+  yaxis = y
+) %>%
+  add_text(text=sexFreq$Freq, textposition = 'top', showlegend = FALSE,
+           textfont=list(size=15, color="black"))
 
 # RACE
 raceFreq <- table(demographicsData$race)
@@ -91,7 +116,6 @@ names(raceFreq)[1] <- 'Race'
 packing <- circleProgressiveLayout(raceFreq$Freq, sizetype='area')
 raceFreq <- cbind(raceFreq, packing)
 dat.gg <- circleLayoutVertices(packing, npoints=50)
-dat.gg
 # Make the plot with a few differences compared to the static version:
 race_plot <- ggplot() + 
   geom_polygon_interactive(data = dat.gg, aes(x, y, group = id, fill=id, tooltip = paste0(raceFreq$Race[id],'<br>',"<b>Number of Deaths: </b>",raceFreq$Freq[id]), data_id = id), colour = "black", alpha = 0.6) +
@@ -103,7 +127,7 @@ race_plot <- ggplot() +
   theme(plot.title = element_text(face = "bold")) + theme(plot.title = element_text(hjust=0.4)) 
 # Turn it interactive
 race_fig <- ggiraph(ggobj = race_plot, width_svg = 7, height_svg = 7)
-race_fig
+
 
 ### Factors Analysis
 
@@ -119,4 +143,4 @@ factors_plot <- ggplot(factors_analysis, aes(x = race, y = age, size = freq, fil
 
 factors_fig <- ggplotly(factors_plot, tooltip = 'text', height = 520) %>%
   layout(autosize=TRUE)
-factors_fig
+
