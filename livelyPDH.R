@@ -1,55 +1,65 @@
-# library(ggplot2)
-# library(maps)
-# library(dplyr)
-# library(Hmisc)
-# library(stringr)
-# library(Hmisc)
-# #library(ggmap)
-# library(ggthemes)
-# library(plotly)
+library(dplyr)
+library(Hmisc)
+library(stringr)
+library(Hmisc)
+library(ggthemes)
+library(plotly)
+library(leaflet)
+library(sf)
+
 # get the data for Georgia Map
-GAmap <- map_data('county', 'georgia')
+GAcounty <<- st_read('https://opendata.arcgis.com/datasets/dc20713282734a73abe990995de40497_68.geojson')
 
 # read the CSV file
 dataFile = read.csv('./dataInput/countycases.csv', as.is = TRUE)
+dataFile <- dataFile[order(dataFile$county_resident),]
 
-# turn all counties into lowercase
-dataFile$county_resident = tolower(dataFile$county_resident)
-# Because there is an exception (difference) between our data file and available GAmap data from RStudio 
-# dekalb vs de kalb
-dataFile[which(dataFile == 'dekalb', arr.ind = TRUE)] <- 'de kalb'
-
-# combined two tables: This may no include the Non-Georgia Resident and Unknown.
-MergedGA <- inner_join(GAmap, dataFile, by = c("subregion" = "county_resident"))
-# get the capitalized county names:
-MergedGA$subregion = capitalize(MergedGA$subregion)
-MergedGA <- MergedGA%>%
+GA_sf <- inner_join(GAcounty,dataFile, by = c("NAME10"  = "county_resident"))
+GA_sf <- GA_sf%>%
   rename(
-    County = subregion,
+    County = NAME10,
     Death = DEATHS, 
     Hospitalization = HOSPITALIZATION
   )
-# GEORGIA CONFIRMED CASES MAP:
 
-staticPlot <- function(status,lowColor,highColor){
-  status_map <- ggplot() + geom_polygon( data=MergedGA, 
-                                           aes(x = long, y = lat, group = group, text = paste0('<b>County: </b>',County, "<br>", "<b>",status," Cases: </b>", MergedGA[,status]), fill = MergedGA[,status]), 
-                                           color="black", size = 0.2) 
-  status_map <- status_map + scale_fill_continuous(low = lowColor, high = highColor, limits = c(0,max(MergedGA[,names(MergedGA) == status])), 
-                                                   breaks= quantile(MergedGA[,names(MergedGA) == status],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1)),
-                                                   na.value = "grey50") +
-    coord_map("polyconic") + theme_map() +
-    labs(title=paste0("Georgia ",status," Cases Map")) + theme(legend.position = "none") + 
-    theme(plot.title = element_text(face = "bold")) + guides(fill = FALSE) +
-    theme(plot.title = element_text(hjust=0.4)) #+ theme(plot.title = element_text(vjust= -10)) 
-  status_map <- ggplotly(status_map, tooltip = 'text') %>%
-    highlight(
-      "plotly_hover",
-      selected = attrs_selected(line = list(color = "black"))
-    ) 
-  return(status_map)
+GA_sf <- GA_sf[order(GA_sf$County),]
+getColors <- function(status,colorBands){
+  bins <- quantile(dataFile[,status],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1))
+  pal <- colorBin(colorBands, domain = dataFile[,status], bins = bins)
+  return(pal)
+}  
+#### Map
+livelyMap <- function(status,name,colorBands){
+  bins <- quantile(dataFile[,status],c(0,0.2,0.3,0.5,0.6,0.7,0.8,0.85,0.88,0.9,0.93,0.98,0.99,1))
+  pal <- colorBin(colorBands, domain = dataFile[,status], bins = bins)
+  
+  map <- leaflet(GA_sf) %>%
+    addPolygons(
+      data = GA_sf,
+      fillColor = ~pal(dataFile[,status]),
+      weight = 0.5,
+      opacity = 1,
+      color = "black",
+      dashArray = "3",
+      fillOpacity = 0.7,
+      highlight = highlightOptions(
+        weight = 5,
+        color = "#666",
+        dashArray = "",
+        fillOpacity = 0.7,
+        bringToFront = TRUE),
+      label = sprintf("<strong>County: %s</strong><br>%s: %g", dataFile$county_resident, name, dataFile[,status]) %>% lapply(htmltools::HTML),
+      labelOptions = labelOptions(
+        style = list("font-weight" = "normal", padding = "3px 8px"),
+        textsize = "15px",
+        direction = "auto")) #%>%
+    #addLegend(pal = pal, values = ~dataFile[,status], opacity = 0.7, title = name,
+     #         position = "bottomright")
+  map <- map %>%   fitBounds(-83, 35, -83, 30.5)
+  return(map)
 }
+positive_map <- livelyMap('Positive','Confirmed Cases',"YlOrRd")
 
-positive_map <- staticPlot('Positive','lemonchiffon','firebrick')
-death_map <- staticPlot('Death','lightblue','darkblue')
-hospitalization_map <- staticPlot('Hospitalization',"darkolivegreen1",'green4')
+death_map <- livelyMap('DEATHS',"Death Cases", "YlGnBu")
+hospitalization_map <- livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd")
+
