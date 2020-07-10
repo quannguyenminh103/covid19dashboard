@@ -1,14 +1,14 @@
-# library(ggplot2)
-# library(maps)
-# #library(plyr)
-# library(dplyr)
-# library(tidyverse)
-# library(Hmisc)
-# library(stringr)
-# library(ggthemes)
-# library(viridis)
-# #library(rgdal)
-# library(plotly)
+library(ggplot2)
+library(maps)
+#library(plyr)
+library(dplyr)
+library(tidyverse)
+library(Hmisc)
+library(stringr)
+library(ggthemes)
+library(viridis)
+#library(rgdal)
+library(plotly)
 
 
 dailyData = read.csv(url('https://covidtracking.com/api/v1/states/ga/daily.csv'))
@@ -95,20 +95,19 @@ plotGraph <- function(name,actual, compare, yaxis,pop){
   return(figure)
 }
 positive_plot <- plotGraph("Confirmed","positive","S","Cumulative Confirmed Cases",population)
-positive_plot
+#positive_plot
 
 death_plot <- plotGraph("Deaths","death","D","Cumulative Recorded Deaths",0)
-death_plot
+#death_plot
 
 hospitalization_plot <- plotGraph("Hospitalizations","hospitalizedCumulative","Hcumulative","Cumulative Recorded Hospitalizations",0)
-hospitalization_plot
-head(baselinePP)
+#hospitalization_plot
 
 NCperday_plot <- plotGraph("New Cases","positiveIncrease",'NCperday',"New Cases per Day",0)
-NCperday_plot
+#NCperday_plot
 
 Dperday_plot <- plotGraph("New Deaths","deathIncrease","Dperday","New Deaths per Day",0)
-Dperday_plot
+#Dperday_plot
 
 ICU_plot <- plotGraph("ICU Cases","inIcuCumulative","Ihcrit","Cumulative ICU Cases",0)
-ICU_plot
+#ICU_plot
