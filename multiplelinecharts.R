@@ -35,7 +35,8 @@ for (val in 1:length(dailyData$date)){
 dailyData$date <- as.Date(dailyData$date)
 
 ### Get the neccesary columns in dailyData: Date, Positive, hospitalizedCumulative,inICUcumulative, death
-dailyData <- dailyData[,c(1,3,7,9,17,25,31)]
+#dailyData <- dailyData[,c(1,3,7,9,17,27,33)]
+dailyData <- dailyData[,c("date","positive","hospitalizedCumulative","inIcuCumulative","death","positiveIncrease","deathIncrease")]
 
 renameData <- function(dataSet){
   dataSet <- dataSet[,c("X","S","R","D","Dperday","NCperday","Hcumulative","Ihcrit")]
@@ -61,38 +62,6 @@ transmission50Future <- transmission50[which(transmission50$date > Sys.Date()),]
 #### 75% Transmissions Reduction Data TRANSFORMATIONS inner join with actual data for easier to draw the graphs:
 transmission75PP <- inner_join(dailyData,transmission75[which(transmission75$date <= Sys.Date()),], by = "date")
 transmission75Future <- transmission75[which(transmission75$date > Sys.Date()),]
-head(baselinePP)
-
-plotChart <- ggplot() + 
-  geom_line(aes(x = baselinePP$date, y = baselinePP[,'S'], fill = "Baseline Past & Present Data"), size = 1, color = 'red', show.legend = TRUE) +
-  geom_point(aes(x = baselinePP$date, y = baselinePP[,'S'], fill = "Baseline Past & Present Data", text = paste0('<b>Date: </b>',baselinePP$date,'<br>','<b>MAGE Baseline Calculated Values: </b>',baselinePP[,'S'])), shape = 16, size =1.5, color = 'red')+
-  
-  geom_line(aes(x = baselineFuture$date, y = baselineFuture[,'S'], fill = "Baseline Future Predicted Data"), size = 1, color = 'red', linetype = 'dotdash') +
-  geom_point(aes(x = baselineFuture$date, y = baselineFuture[,'S'], fill = "Baseline Future Predicted Data", text = paste0('<b>Date: </b>',baselineFuture$date,'<br>','<b>MAGE Baseline Calculated Values: </b>',baselineFuture[,'S'])), shape = 5, size =1.5, color = 'red') +
-  
-  geom_line(aes(x = transmission50PP$date, y = transmission50PP[,'S'], fill = "50% TR Past & Present Data"), size = 1, color = 'orange') +
-  #geom_point(aes(x = transmission50PP$date, y = transmission50PP[,'S'], fill = "50% TR Past & Present Data", text = paste0('<b>Date: </b>',transmission50PP$date,'<br>','<b>MAGE 50% TR Calculated Values: </b>',transmission50PP[,'S'])), shape = 16, size =1.5, color = 'orange') +
-  
-  geom_line(aes(x = transmission50Future$date, y = transmission50Future[,'S'], fill = "50% TR Future Predicted Data"), size = 1, color = 'orange', linetype = 'dotdash') +
-  geom_point(aes(x = transmission50Future$date, y = transmission50Future[,'S'], fill = "50% TR Future Predicted Data", text = paste0('<b>Date: </b>',transmission50Future$date,'<br>','<b>MAGE 50% TR Calculated Values: </b>',transmission50Future[,'S'])), shape = 5, size =1.5, colour = 'orange') +
-  
-  geom_line(aes(x = transmission75PP$date, y = transmission75PP[,'S'], fill = "50% TR Past & Present Data"), size = 1, color = 'green') +
-  #geom_point(aes(x = transmission75PP$date, y = transmission75PP[,'S'], fill = "50% TR Past & Present Data", text = paste0('<b>Date: </b>',transmission75PP$date,'<br>','<b>MAGE 75% TR Calculated Values: </b>',transmission75PP[,'S'])), shape = 16, size =1.5, color = 'green') +
-  
-  geom_line(aes(x = transmission75Future$date, y = transmission75Future[,'S'], fill = "75% TR Future Predicted Data"), size = 1, color = 'green', linetype = 'dotdash') +
-  geom_point(aes(x = transmission75Future$date, y = transmission75Future[,'S'], fill = "75% TR Future Predicted Data", text = paste0('<b>Date: </b>',transmission75Future$date,'<br>','<b>MAGE 75% TR Calculated Values: </b>',transmission75Future[,'S'])), shape = 5, size =1.5, color = 'green') +
-  
-  #geom_line(aes(x = baselinePP$date, y = baselinePP[,actual], fill = "Actual Data"), size = 1, color = 'purple') +
-  geom_point(aes(x = baselinePP$date, y = baselinePP[,'positive'], fill = "Actual Data", text = paste0('<b>Date: </b>',baselinePP$date,'<br>','<b>Actual Values: </b>',baselinePP[,'positive'])), shape = 15, size =1.5, color = 'purple') +
-  
-  guides(fill=FALSE)+
-  labs(title = paste("Daily growth of Positive by Date using MAGE model"), y = 'Cumulative Recorded Cases', x = "Date") +
-  #scale_x_date(breaks  = as.Date(c("2020-04-28","2020-05-01", "2020-06-01", "2020-07-01", "2020-07-04")))
-  scale_x_date(date_breaks = "1 month", date_labels =  "%d %b", minor_breaks = as.Date(c("2020-04-28","2020-05-01","2020-07-04","2020-08-17"))) +
-  theme(axis.text.x=element_text(angle=60, hjust=1))
-figure <- ggplotly(plotChart, tooltip = 'text')
-
-figure
 
 plotGraph <- function(name,actual, compare, yaxis,pop){
   plotChart <- ggplot() + 
@@ -133,6 +102,7 @@ death_plot
 
 hospitalization_plot <- plotGraph("Hospitalizations","hospitalizedCumulative","Hcumulative","Cumulative Recorded Hospitalizations",0)
 hospitalization_plot
+head(baselinePP)
 
 NCperday_plot <- plotGraph("New Cases","positiveIncrease",'NCperday',"New Cases per Day",0)
 NCperday_plot
