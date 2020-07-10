@@ -44,7 +44,7 @@ library(tableHTML)
 library(leaflet)
 library(sf)
 library(data.table)
-
+library(profvis)
 
 source('./tabletop10.R')
 source('./livelyPDH.R')
@@ -111,12 +111,12 @@ body <- dashboardBody(
 
     tabItem(tabName = "maps",
             fluidRow(
-              box(width = 4, leafletOutput('PositiveMap')),
-              box(width = 4,leafletOutput('DeathMap')),
-              box(width = 4,leafletOutput('HospitalizationMap'))
+              box(width = 6, leafletOutput('PositiveMap')),
+              box(width = 6,leafletOutput('DeathMap')),
+              #box(width = 4,leafletOutput('HospitalizationMap'))
             ),
             fluidRow(
-              box(width = 12, img(src="GAConfirmedCasesMap.gif"), align = 'center')
+             box(width = 12, img(src="GAConfirmedCasesMap.gif"), align = 'center')
             ),
 
             fluidRow(
@@ -134,7 +134,6 @@ body <- dashboardBody(
             ),
             fluidRow(
               box(ggiraphOutput("Race")),
-              #column(6,div(style="width:400px;height:800px;", ggiraphOutput("Race"))),
               box(plotlyOutput('Combined'), height = 530)
             )
     ),
@@ -267,12 +266,12 @@ server <- function(input,output){
   ##### MAPS TABS
   output$PositiveMap <- renderLeaflet(livelyMap('Positive','Confirmed Cases',"YlOrRd"))
   output$DeathMap <- renderLeaflet(livelyMap('DEATHS',"Death Cases", "YlGnBu"))
-  output$HospitalizationMap <- renderLeaflet(livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd"))
-
-  output$PositiveGIF <- renderImage({
-    tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
-  })
+  #output$HospitalizationMap <- renderLeaflet(livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd"))
   
+  output$PositiveGIF <- renderImage({
+   tags$video(src=paste("./GAConfirmedCasesMap.gif"),type="video/gif", width=100)
+  })
+
   output$RiskyMap <- renderLeaflet({
     eventMap(input$number)}
     )
