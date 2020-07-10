@@ -7,11 +7,11 @@
 # library(viridis)
 # #library(rgdal)
 # library(plotly)
-
+# library(data.table)
 
 #daily = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
-daily = read.csv(url('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv'))
-
+daily = fread('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv')
+daily <- as.data.frame(daily)
 daily$COUNTY_NAME <- tolower(daily$COUNTY_NAME)
 daily[which(daily == 'dekalb', arr.ind = TRUE)] <- 'de kalb'
 georgiaIndex <- which(daily[,"PROVINCE_STATE_NAME"] == 'Georgia', arr.ind = TRUE)
