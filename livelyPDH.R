@@ -1,11 +1,11 @@
-library(dplyr)
-library(Hmisc)
-library(stringr)
-library(Hmisc)
-library(ggthemes)
-library(plotly)
-library(leaflet)
-library(sf)
+# library(dplyr)
+# library(Hmisc)
+# library(stringr)
+# library(Hmisc)
+# library(ggthemes)
+# library(plotly)
+# library(leaflet)
+# library(sf)
 
 # get the data for Georgia Map
 GAcounty <<- st_read('https://opendata.arcgis.com/datasets/dc20713282734a73abe990995de40497_68.geojson')
@@ -59,7 +59,6 @@ livelyMap <- function(status,name,colorBands){
   return(map)
 }
 positive_map <- livelyMap('Positive','Confirmed Cases',"YlOrRd")
-
 death_map <- livelyMap('DEATHS',"Death Cases", "YlGnBu")
-hospitalization_map <- livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd")
+#hospitalization_map <- livelyMap('HOSPITALIZATION',"Hospitalizations", "PuRd")
 
