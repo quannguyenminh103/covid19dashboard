@@ -1,70 +1,66 @@
-# library(ggplot2)
-# library(maps)
-# library(dplyr)
-# library(Hmisc)
-# library(stringr)
-# library(ggthemes)
-# library(viridis)
-# #library(rgdal)
-# library(plotly)
-# library(data.table)
+library(ggplot2)
+library(maps)
+library(dplyr)
+library(Hmisc)
+library(stringr)
+library(ggthemes)
+library(viridis)
+#library(rgdal)
+library(plotly)
+library(data.table)
 
-#daily = read.csv('./dataInput/COVID-19-Activity.csv', as.is = TRUE)
-daily = fread('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv')
-daily <- as.data.frame(daily)
-daily$COUNTY_NAME <- tolower(daily$COUNTY_NAME)
-daily[which(daily == 'dekalb', arr.ind = TRUE)] <- 'de kalb'
-georgiaIndex <- which(daily[,"PROVINCE_STATE_NAME"] == 'Georgia', arr.ind = TRUE)
-georgiaDaily <- daily[georgiaIndex,]
-
-georgiaDaily$REPORT_DATE<- strptime(as.character(georgiaDaily$REPORT_DATE), "%m/%d/%Y")
-georgiaDaily$REPORT_DATE <- format(georgiaDaily$REPORT_DATE, "%Y-%m-%d")
-georgiaDaily$REPORT_DATE <- as.Date(georgiaDaily$REPORT_DATE)
-### Get Date Range
-date_range <- seq(as.Date("2020-03-02"), Sys.Date()-2, "days")
-
-count_byday <- function(dataSet, rdate){
-  subset <- dataSet[which(dataSet[,"REPORT_DATE"] == rdate, arr.ind = TRUE),]
-  positive_per_day = sum(subset["PEOPLE_POSITIVE_NEW_CASES_COUNT"])
-  death_per_day = sum(subset["PEOPLE_DEATH_NEW_COUNT"])
-  values <- list(positive_per_day,death_per_day)
-  return(values)
+dataTracking = read.csv(url('https://covidtracking.com/api/v1/states/ga/daily.csv'))
+#dataTracking = fread('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv')
+dataTracking <- as.data.frame(dataTracking)
+#dataTracking$REPORT_DATE <- as.Date(dataTracking$REPORT_DATE)
+convert_date <- function(dataSet){
+  year = substr(dataSet,start = 1, stop = 4)
+  month = substr(dataSet,start = 5, stop = 6)
+  day = substr(dataSet,start = 7, stop = 8)
+  convertDate = as.Date(paste0(year,"-",month,"-",day))
+  return(convertDate)
 }
-statisticsTable <- function(dataSet){
-  first_date <- count_byday(dataSet,"2020-03-01")
-  date_df <- data.frame("DATE" = "2020-03-01","New_Positive_Cases" = unlist(first_date[1]),"New_Death_Cases" = unlist(first_date[2]))
-  for (val in 2:length(date_range)){
-    new_date <- count_byday(dataSet,toString(date_range[val]))
-    date_df <- rbind(date_df, list(toString(date_range[val]),unlist(new_date[1]),unlist(new_date[2])))
-  }
-  date_df$DATE <- as.Date(date_df$DATE)
-  return(date_df)
+
+for (val in 1:length(dataTracking$date)){
+  dataTracking$date[val] <- toString(convert_date(dataTracking$date[val]))
 }
-# get the Data Value Table:
-georgiaData <- georgiaDaily[,c("REPORT_DATE","PEOPLE_POSITIVE_NEW_CASES_COUNT","PEOPLE_DEATH_NEW_COUNT")]
 
-# filter Value Table with report date, new positive and death cases:
-date_df <- statisticsTable(georgiaData)
+dataTracking$date <- as.Date(dataTracking$date)
 
-max_Pos = max(date_df$New_Positive_Cases)
-max_Dea = max(date_df$New_Death_Cases)
+### Get the neccesary columns in dataTracking: Date, Positive, hospitalizedCumulative,inICUcumulative, death
+dataTracking <- dataTracking[,c("date","positiveIncrease","deathIncrease")]
 
-plotPD <- ggplot(date_df, aes(x = DATE)) +
-  geom_col(aes( y = New_Positive_Cases, group = 1, text = paste("<b>Date: </b>", DATE, "<br>",
-                                                                     "<b>New Confirmed Cases: </b>", New_Positive_Cases)), fill = "red") +
-  geom_line(aes(y = New_Death_Cases/(max_Dea/max_Pos), group = 1, text = paste("<b>Date: </b>", DATE, "<br>",
-                                                                                 "<b>New Death Cases: </b>", New_Death_Cases)),color = 'black') +
+max_Pos = max(dataTracking$positiveIncrease)
+max_Dea = max(dataTracking$deathIncrease)
+
+plotPD <- ggplot(dataTracking, aes(x = date)) +
+  geom_col(aes( y = positiveIncrease, group = 1, text = paste("<b>Date: </b>", date, "<br>",
+                                                                "<b>New Confirmed Cases: </b>", positiveIncrease)), fill = "red") +
+  geom_line(aes(y = deathIncrease/(max_Dea/max_Pos), group = 1, text = paste("<b>Date: </b>", date, "<br>",
+                                                                               "<b>New Death Cases: </b>", deathIncrease)),color = 'black') +
   scale_fill_manual('', labels = 'New Positive Cases', values = "#C00000") +
   scale_color_manual('', labels = 'New Death Cases', values = 'black') +
-  labs(title = "Daily growth of Confirmed and Deaths by Date", y = "<b>New Positive Cases<b>") + guides(fill = FALSE) +
-  theme_minimal() +  scale_y_continuous(sec.axis = sec_axis(~ . * (max_Dea/max_Pos),name = "New Death Cases"))
+  labs(title = "Daily growth of Confirmed and Deaths by Date", x = 'Date', y = "New Positive Cases") + guides(fill = FALSE) +
+  theme_minimal() +  scale_y_continuous(sec.axis = sec_axis(~ . * (max_Dea/max_Pos),name = "New Death Cases")) +
+  theme(text=element_text(size=13,  family="georgia")) + theme(plot.margin = unit(c(1,1.4,1,1),"cm"))
 
 
-fig <- ggplotly(plotPD, tooltip = "text")  
-# %>%
-#    add_lines(data=date_df, x=~DATE, y=~New_Death_Cases, colors=NULL, yaxis="y2", 
-#              inherit=FALSE, showlegend = FALSE) %>%
-#    layout(yaxis2 = list(overlaying = "y", side = "right",
-#                         tickfont = list(size=12), titlefont = list(size = 14), color = 'black',title = "New Death Cases"))
-# fig
+fig <- ggplotly(plotPD, tooltip = "text") %>%
+  add_lines(x = ~(min(dataTracking$date) + 15):(max(dataTracking$date) + 15), y = ~dataTracking$deathIncrease, name = '', hoverinfo = 'skip' ,yaxis = 'y2', color = I("transparent"), showlegend = FALSE) %>%
+  layout(
+    yaxis2 = list(
+      side = "right",
+      overlaying = 'y',
+      title = "New Death Cases",
+      #showgrid = FALSE,
+      titlefont = list(
+        family = 'georgia',
+        size = 17
+      ),
+      tickfont = list(
+        size = 14
+      )
+    )
+  )
 
+fig
