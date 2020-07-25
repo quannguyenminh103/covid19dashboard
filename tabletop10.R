@@ -1,6 +1,6 @@
-# library(tidyverse)
-# library(dplyr)
-# #library(plyr)
+library(tidyverse)
+library(dplyr)
+#library(plyr)
 
 overviewData = read.csv('./dataInput/countycases.csv', as.is = TRUE)
 head(overviewData)
@@ -41,3 +41,4 @@ topTable <- topTable%>%
     Rate = case_rate
   )
 
+topTable
