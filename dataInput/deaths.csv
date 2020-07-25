@@ -61,7 +61,7 @@ age,race,sex,county,chronic_condition
 82,White,Female,Baldwin,No
 90+,African-American/ Black,Female,Baldwin,No
 82,Other,Male,Baldwin,Unknown
-63,African-American/ Black,Female,Baldwin,Yes
+63,African-American/ Black,Unknown,Baldwin,Unknown
 84,White,Male,Banks,Yes
 74,White,Female,Banks,Yes
 72,White,Male,Banks,Yes
@@ -137,7 +137,7 @@ age,race,sex,county,chronic_condition
 90+,White,Male,Bartow,Yes
 82,White,Male,Bartow,Yes
 70,White,Female,Bartow,No
-89,White,Unknown,Bartow,Yes
+90+,White,Male,Bartow,Yes
 64,African-American/ Black,Male,Bartow,Yes
 66,Other,Male,Bartow,Yes
 77,White,Female,Bartow,Yes
@@ -187,6 +187,7 @@ age,race,sex,county,chronic_condition
 72,African-American/ Black,Male,Bibb,Yes
 80,White,Male,Bibb,Yes
 67,African-American/ Black,Male,Bibb,Yes
+48,White,Male,Bibb,Yes
 86,White,Female,Bibb,Yes
 82,White,Female,Bibb,Yes
 79,White,Male,Bibb,Yes
@@ -197,10 +198,12 @@ age,race,sex,county,chronic_condition
 79,African-American/ Black,Female,Bibb,Yes
 85,White,Male,Bibb,Yes
 90+,African-American/ Black,Female,Bibb,Unknown
-77,White,Female,Bibb,Unknown
+77,White,Female,Bibb,Yes
 77,African-American/ Black,Female,Bibb,No
 79,African-American/ Black,Female,Bibb,Yes
 48,African-American/ Black,Female,Bleckley,Yes
+80,Unknown,Male,Bleckley,Unknown
+58,Unknown,Female,Bleckley,Yes
 78,White,Female,Brantley,Yes
 79,White,Female,Brantley,Unknown
 90+,White,Female,Brantley,Yes
@@ -216,6 +219,7 @@ age,race,sex,county,chronic_condition
 76,African-American/ Black,Male,Brooks,Yes
 68,African-American/ Black,Male,Brooks,Yes
 72,White,Female,Brooks,No
+76,White,Male,Brooks,Yes
 70,White,Female,Bryan,Yes
 63,White,Male,Bryan,Yes
 60,White,Male,Bryan,Yes
@@ -224,6 +228,7 @@ age,race,sex,county,chronic_condition
 71,African-American/ Black,Female,Bryan,Yes
 65,White,Male,Bulloch,Unknown
 42,African-American/ Black,Female,Bulloch,Yes
+76,White,Female,Bulloch,Yes
 76,White,Female,Bulloch,No
 90+,White,Female,Bulloch,Unknown
 52,African-American/ Black,Male,Bulloch,Yes
@@ -373,6 +378,7 @@ age,race,sex,county,chronic_condition
 44,African-American/ Black,Male,Chatham,Yes
 86,African-American/ Black,Female,Chatham,Yes
 80,African-American/ Black,Female,Chatham,Yes
+90+,White,Female,Chatham,No
 78,African-American/ Black,Female,Chatham,Yes
 75,African-American/ Black,Male,Chatham,Yes
 70,African-American/ Black,Male,Chatham,Unknown
@@ -380,8 +386,11 @@ age,race,sex,county,chronic_condition
 70,African-American/ Black,Male,Chatham,Yes
 38,African-American/ Black,Female,Chatham,Unknown
 40,White,Male,Chatham,No
+59,White,Male,Chatham,Yes
+68,Asian,Female,Chatham,No
 61,White,Male,Chatham,Unknown
 86,White,Female,Chatham,Yes
+90+,Unknown,Female,Chatham,Unknown
 85,White,Female,Chattahoochee,Yes
 82,White,Male,Chattooga,Yes
 65,White,Male,Chattooga,Yes
@@ -434,6 +443,7 @@ age,race,sex,county,chronic_condition
 90+,White,Male,Cherokee,Yes
 79,White,Male,Cherokee,Yes
 88,White,Male,Cherokee,Yes
+86,White,Male,Cherokee,Yes
 84,White,Male,Cherokee,Yes
 83,White,Female,Cherokee,Yes
 78,White,Female,Clarke,Unknown
@@ -538,10 +548,12 @@ age,race,sex,county,chronic_condition
 81,African-American/ Black,Male,Clayton,Yes
 52,African-American/ Black,Male,Clayton,Unknown
 63,African-American/ Black,Male,Clayton,Unknown
+43,White,Female,Clayton,No
 48,Native Hawaiian/ Pacific Islander,Female,Clayton,Unknown
+68,African-American/ Black,Male,Clayton,Unknown
 26,African-American/ Black,Male,Clayton,Unknown
 26,African-American/ Black,Male,Clayton,Yes
-39,Unknown,Female,Clayton,Yes
+39,African-American/ Black,Female,Clayton,Yes
 72,Other,Female,Clayton,Yes
 72,White,Male,Clinch,Unknown
 72,White,Male,Clinch,Unknown
@@ -797,7 +809,7 @@ age,race,sex,county,chronic_condition
 41,White,Male,Cobb,No
 90+,White,Female,Cobb,Yes
 75,African-American/ Black,Male,Cobb,Yes
-55,Other,Female,Cobb,Yes
+55,White,Female,Cobb,Yes
 90+,African-American/ Black,Female,Cobb,Unknown
 79,White,Male,Cobb,Unknown
 90+,Other,Female,Cobb,Unknown
@@ -819,6 +831,7 @@ age,race,sex,county,chronic_condition
 77,Other,Male,Cobb,Yes
 66,Other,Male,Cobb,Yes
 43,Asian,Female,Cobb,Yes
+90+,White,Female,Cobb,No
 55,African-American/ Black,Male,Cobb,Unknown
 57,African-American/ Black,Male,Cobb,No
 55,Other,Female,Cobb,Yes
@@ -828,7 +841,11 @@ age,race,sex,county,chronic_condition
 81,Other,Female,Cobb,Unknown
 44,African-American/ Black,Female,Cobb,Yes
 73,African-American/ Black,Female,Cobb,Yes
+77,African-American/ Black,Male,Cobb,Unknown
+60,African-American/ Black,Male,Cobb,Unknown
+85,Unknown,Female,Cobb,Unknown
 69,White,Female,Cobb,Yes
+80,African-American/ Black,Male,Cobb,Unknown
 48,African-American/ Black,Female,Coffee,Yes
 55,African-American/ Black,Female,Coffee,Yes
 66,African-American/ Black,Male,Coffee,No
@@ -947,7 +964,7 @@ age,race,sex,county,chronic_condition
 81,African-American/ Black,Male,DeKalb,Yes
 73,African-American/ Black,Female,DeKalb,No
 68,African-American/ Black,Female,DeKalb,Yes
-66,African-American/ Black,Female,DeKalb,Unknown
+66,African-American/ Black,Female,DeKalb,Yes
 74,African-American/ Black,Male,DeKalb,Yes
 66,African-American/ Black,Male,DeKalb,Yes
 90+,White,Male,DeKalb,Yes
@@ -1116,10 +1133,12 @@ age,race,sex,county,chronic_condition
 52,African-American/ Black,Male,DeKalb,No
 86,African-American/ Black,Male,DeKalb,Yes
 72,White,Female,DeKalb,Yes
-53,White,Female,DeKalb,Unknown
+53,White,Female,DeKalb,No
 33,Unknown,Male,DeKalb,Unknown
 73,African-American/ Black,Female,DeKalb,No
 74,African-American/ Black,Female,DeKalb,Yes
+71,African-American/ Black,Male,DeKalb,Yes
+57,Asian,Male,DeKalb,Yes
 87,Native Hawaiian/ Pacific Islander,Female,DeKalb,Unknown
 77,African-American/ Black,Female,DeKalb,Yes
 90+,African-American/ Black,Female,DeKalb,Yes
@@ -1132,7 +1151,7 @@ age,race,sex,county,chronic_condition
 86,White,Female,DeKalb,Yes
 69,African-American/ Black,Male,DeKalb,Yes
 56,African-American/ Black,Female,DeKalb,No
-81,African-American/ Black,Male,DeKalb,Unknown
+81,African-American/ Black,Male,DeKalb,Yes
 26,White,Female,DeKalb,Unknown
 79,African-American/ Black,Female,Decatur,Yes
 71,African-American/ Black,Female,Decatur,Yes
@@ -1317,7 +1336,9 @@ age,race,sex,county,chronic_condition
 79,White,Female,Dougherty,Unknown
 90+,African-American/ Black,Female,Dougherty,Unknown
 64,African-American/ Black,Female,Dougherty,Yes
+81,White,Female,Dougherty,No
 63,African-American/ Black,Female,Dougherty,Unknown
+44,African-American/ Black,Female,Dougherty,Yes
 66,White,Male,Douglas,No
 78,African-American/ Black,Male,Douglas,Yes
 84,African-American/ Black,Male,Douglas,Yes
@@ -1358,6 +1379,7 @@ age,race,sex,county,chronic_condition
 80,Asian,Male,Douglas,Yes
 32,White,Female,Douglas,Yes
 71,Other,Female,Douglas,Yes
+66,White,Female,Douglas,Unknown
 40,Other,Male,Douglas,No
 60,African-American/ Black,Male,Douglas,No
 84,African-American/ Black,Female,Douglas,Yes
@@ -1636,6 +1658,7 @@ age,race,sex,county,chronic_condition
 79,African-American/ Black,Male,Fulton,Yes
 76,White,Male,Fulton,No
 78,African-American/ Black,Male,Fulton,Yes
+80,African-American/ Black,Male,Fulton,Yes
 50,African-American/ Black,Male,Fulton,Yes
 80,African-American/ Black,Male,Fulton,No
 80,African-American/ Black,Male,Fulton,Unknown
@@ -1687,6 +1710,7 @@ age,race,sex,county,chronic_condition
 77,African-American/ Black,Male,Fulton,Yes
 71,African-American/ Black,Male,Fulton,Yes
 82,African-American/ Black,Female,Fulton,Yes
+65,African-American/ Black,Female,Fulton,Unknown
 90+,White,Male,Fulton,Yes
 88,African-American/ Black,Female,Fulton,Yes
 70,African-American/ Black,Male,Fulton,Unknown
@@ -1755,7 +1779,7 @@ age,race,sex,county,chronic_condition
 73,African-American/ Black,Male,Fulton,No
 57,African-American/ Black,Female,Fulton,Unknown
 82,African-American/ Black,Male,Fulton,Yes
-67,White,Male,Fulton,Yes
+67,African-American/ Black,Male,Fulton,Yes
 63,African-American/ Black,Female,Fulton,Yes
 17,African-American/ Black,Male,Fulton,Yes
 79,African-American/ Black,Female,Fulton,No
@@ -1788,7 +1812,7 @@ age,race,sex,county,chronic_condition
 70,White,Male,Fulton,No
 79,African-American/ Black,Female,Fulton,No
 90+,White,Female,Fulton,Yes
-71,African-American/ Black,Female,Fulton,No
+72,African-American/ Black,Female,Fulton,No
 58,Other,Female,Fulton,Yes
 76,African-American/ Black,Male,Fulton,No
 45,African-American/ Black,Male,Fulton,Unknown
@@ -1796,10 +1820,13 @@ age,race,sex,county,chronic_condition
 82,White,Female,Fulton,No
 60,White,Male,Fulton,No
 89,White,Female,Fulton,No
+66,African-American/ Black,Male,Fulton,Unknown
 83,African-American/ Black,Male,Fulton,Unknown
 86,African-American/ Black,Female,Fulton,Unknown
 77,African-American/ Black,Male,Fulton,Yes
+53,African-American/ Black,Female,Fulton,Unknown
 84,African-American/ Black,Male,Fulton,No
+88,White,Female,Fulton,Unknown
 75,African-American/ Black,Female,Fulton,No
 80,African-American/ Black,Female,Fulton,Unknown
 26,African-American/ Black,Female,Fulton,No
@@ -1807,6 +1834,7 @@ age,race,sex,county,chronic_condition
 48,African-American/ Black,Male,Fulton,No
 90+,African-American/ Black,Female,Fulton,Unknown
 28,African-American/ Black,Female,Fulton,Unknown
+62,African-American/ Black,Female,Fulton,Unknown
 82,White,Female,Fulton,Yes
 78,White,Male,Fulton,Yes
 90+,White,Female,Fulton,No
@@ -1823,11 +1851,12 @@ age,race,sex,county,chronic_condition
 53,White,Male,Fulton,Unknown
 56,White,Male,Fulton,No
 90+,White,Female,Fulton,Yes
-90+,White,Female,Fulton,Yes
+90+,White,Male,Fulton,Yes
 90+,White,Male,Fulton,Unknown
+72,African-American/ Black,Female,Fulton,Unknown
 58,White,Male,Gilmer,Yes
 80,White,Female,Gilmer,Unknown
-84,White,Female,Gilmer,No
+84,Asian,Female,Gilmer,No
 90+,White,Male,Glynn,Yes
 76,African-American/ Black,Male,Glynn,Yes
 75,White,Female,Glynn,No
@@ -1846,7 +1875,7 @@ age,race,sex,county,chronic_condition
 78,Unknown,Male,Glynn,Unknown
 58,African-American/ Black,Female,Glynn,Yes
 69,African-American/ Black,Male,Glynn,Unknown
-82,Unknown,Male,Glynn,Unknown
+82,White,Male,Glynn,Unknown
 78,White,Male,Gordon,Yes
 70,White,Female,Gordon,Yes
 68,White,Male,Gordon,Yes
@@ -2069,11 +2098,13 @@ age,race,sex,county,chronic_condition
 37,Unknown,Female,Gwinnett,Unknown
 44,Other,Male,Gwinnett,No
 66,Unknown,Male,Gwinnett,Unknown
+84,White,Female,Gwinnett,Yes
 81,African-American/ Black,Female,Gwinnett,No
 61,African-American/ Black,Male,Gwinnett,Yes
 43,African-American/ Black,Female,Gwinnett,Yes
 60,Other,Male,Gwinnett,Yes
 75,White,Female,Gwinnett,Unknown
+62,White,Male,Gwinnett,Yes
 66,White,Male,Gwinnett,Yes
 67,White,Male,Gwinnett,Unknown
 83,White,Female,Gwinnett,Yes
@@ -2083,11 +2114,12 @@ age,race,sex,county,chronic_condition
 64,Other,Male,Gwinnett,Yes
 71,Other,Female,Gwinnett,Yes
 56,African-American/ Black,Male,Gwinnett,Yes
-85,Unknown,Female,Gwinnett,Yes
+85,African-American/ Black,Female,Gwinnett,Yes
 71,African-American/ Black,Male,Gwinnett,Yes
 76,Other,Female,Gwinnett,Yes
 76,Other,Female,Gwinnett,Yes
 73,African-American/ Black,Female,Gwinnett,Yes
+66,White,Female,Gwinnett,Yes
 84,White,Female,Gwinnett,Yes
 72,African-American/ Black,Male,Gwinnett,Unknown
 32,Unknown,Female,Gwinnett,Unknown
@@ -2143,6 +2175,7 @@ age,race,sex,county,chronic_condition
 90+,White,Female,Habersham,Yes
 70,White,Male,Habersham,Unknown
 53,White,Male,Habersham,Unknown
+54,White,Female,Habersham,Yes
 75,White,Male,Hall,Yes
 45,Other,Male,Hall,Yes
 67,White,Male,Hall,Yes
@@ -2208,6 +2241,7 @@ age,race,sex,county,chronic_condition
 76,White,Female,Hall,Yes
 67,Other,Male,Hall,Yes
 64,White,Male,Hall,No
+81,White,Male,Hall,No
 24,White,Male,Hall,Unknown
 90+,White,Female,Hall,Yes
 76,White,Female,Hall,Yes
@@ -2340,10 +2374,14 @@ age,race,sex,county,chronic_condition
 76,African-American/ Black,Male,Houston,Yes
 90+,White,Male,Houston,Yes
 89,White,Male,Houston,Yes
+72,White,Female,Houston,Yes
+79,White,Male,Houston,Yes
 65,African-American/ Black,Male,Houston,Yes
 82,White,Female,Houston,Yes
 81,White,Female,Houston,Yes
 76,White,Male,Houston,Unknown
+51,African-American/ Black,Female,Houston,Yes
+86,White,Male,Houston,Yes
 80,African-American/ Black,Female,Irwin,Yes
 53,African-American/ Black,Female,Jackson,No
 77,White,Female,Jackson,Yes
@@ -2363,11 +2401,12 @@ age,race,sex,county,chronic_condition
 74,African-American/ Black,Female,Jeff Davis,Unknown
 69,African-American/ Black,Male,Jeff Davis,Yes
 81,White,Male,Jeff Davis,No
+80,White,Male,Jeff Davis,No
 49,African-American/ Black,Female,Jefferson,Yes
 65,African-American/ Black,Female,Jefferson,Yes
 59,African-American/ Black,Male,Jefferson,Yes
 88,White,Male,Jefferson,No
-40,African-American/ Black,Female,Jefferson,Unknown
+40,African-American/ Black,Female,Jefferson,No
 90+,White,Male,Jenkins,Yes
 70,White,Male,Jenkins,Yes
 70,African-American/ Black,Female,Jenkins,Yes
@@ -2379,6 +2418,7 @@ age,race,sex,county,chronic_condition
 71,African-American/ Black,Male,Jenkins,Yes
 72,White,Male,Jenkins,Yes
 90+,African-American/ Black,Female,Jenkins,Yes
+89,White,Female,Jenkins,Yes
 90+,White,Female,Jenkins,Yes
 78,White,Male,Jenkins,Yes
 63,African-American/ Black,Female,Jenkins,Yes
@@ -2388,6 +2428,7 @@ age,race,sex,county,chronic_condition
 86,African-American/ Black,Male,Jenkins,Yes
 90+,African-American/ Black,Male,Johnson,Yes
 67,White,Male,Johnson,Unknown
+90+,Unknown,Male,Johnson,Unknown
 90+,White,Female,Johnson,Yes
 85,African-American/ Black,Male,Jones,Yes
 81,White,Female,Lamar,No
@@ -2453,7 +2494,9 @@ age,race,sex,county,chronic_condition
 29,Other,Female,Lowndes,Unknown
 52,Unknown,Female,Lowndes,Yes
 42,African-American/ Black,Male,Lowndes,Unknown
+79,White,Male,Lowndes,Unknown
 62,Asian,Female,Lowndes,No
+90+,Unknown,Female,Lowndes,Yes
 58,White,Male,Lumpkin,Yes
 78,White,Female,Lumpkin,Yes
 69,White,Female,Lumpkin,Yes
@@ -2485,6 +2528,7 @@ age,race,sex,county,chronic_condition
 81,African-American/ Black,Male,McDuffie,Yes
 77,White,Female,McDuffie,No
 39,White,Male,McDuffie,Yes
+79,White,Male,McDuffie,Yes
 63,White,Female,McIntosh,Yes
 69,African-American/ Black,Female,McIntosh,Unknown
 60,White,Male,Meriwether,Yes
@@ -2610,6 +2654,7 @@ age,race,sex,county,chronic_condition
 64,African-American/ Black,Male,Muscogee,Yes
 81,African-American/ Black,Male,Muscogee,Yes
 66,African-American/ Black,Male,Muscogee,No
+89,White,Female,Muscogee,Yes
 90+,White,Female,Muscogee,Unknown
 80,African-American/ Black,Female,Muscogee,Yes
 90+,White,Male,Muscogee,Unknown
@@ -2722,6 +2767,7 @@ age,race,sex,county,chronic_condition
 59,White,Female,Polk,Yes
 84,White,Male,Polk,Yes
 79,White,Female,Polk,Yes
+81,White,Male,Polk,Yes
 63,African-American/ Black,Male,Pulaski,Yes
 63,African-American/ Black,Female,Pulaski,Yes
 72,White,Male,Putnam,Yes
@@ -2902,6 +2948,7 @@ age,race,sex,county,chronic_condition
 85,White,Male,Spalding,No
 84,White,Female,Spalding,No
 84,White,Male,Spalding,No
+63,African-American/ Black,Male,Spalding,No
 60,Other,Male,Spalding,No
 69,African-American/ Black,Male,Spalding,Unknown
 68,White,Male,Stephens,Yes
@@ -2912,6 +2959,7 @@ age,race,sex,county,chronic_condition
 70,White,Male,Stephens,Yes
 34,Other,Male,Stewart,Yes
 54,African-American/ Black,Female,Stewart,No
+62,White,Female,Stewart,Yes
 90+,White,Female,Stewart,Yes
 43,Other,Male,Stewart,Unknown
 66,African-American/ Black,Female,Sumter,Yes
@@ -2968,18 +3016,18 @@ age,race,sex,county,chronic_condition
 81,White,Male,Sumter,No
 73,African-American/ Black,Male,Sumter,Yes
 65,African-American/ Black,Male,Sumter,Yes
-61,Unknown,Male,Sumter,Unknown
+61,African-American/ Black,Male,Sumter,Unknown
 74,African-American/ Black,Male,Talbot,No
 49,White,Male,Talbot,Yes
 65,African-American/ Black,Male,Talbot,Yes
-70,African-American/ Black,Female,Tattnall,Yes
+69,African-American/ Black,Female,Tattnall,Yes
 60,African-American/ Black,Female,Taylor,Yes
 83,African-American/ Black,Female,Taylor,Yes
 60,White,Male,Telfair,No
 65,African-American/ Black,Female,Telfair,No
 85,White,Male,Telfair,Yes
-81,White,Unknown,Telfair,Unknown
-79,White,Female,Telfair,Unknown
+81,White,Female,Telfair,Unknown
+81,White,Female,Telfair,Unknown
 73,African-American/ Black,Female,Terrell,Yes
 75,African-American/ Black,Male,Terrell,Yes
 68,African-American/ Black,Female,Terrell,Yes
@@ -3161,11 +3209,13 @@ age,race,sex,county,chronic_condition
 52,African-American/ Black,Male,Turner,Yes
 81,African-American/ Black,Female,Turner,Yes
 41,African-American/ Black,Male,Twiggs,Yes
+53,African-American/ Black,Male,Twiggs,Yes
 78,White,Male,Union,Unknown
 70,White,Female,Union,Yes
 86,White,Male,Union,Yes
 85,White,Male,Union,Yes
 90+,White,Female,Union,Yes
+78,White,Female,Union,Yes
 82,White,Male,Non-Georgia Resident,Yes
 71,African-American/ Black,Female,Non-Georgia Resident,Yes
 90+,White,Female,Non-Georgia Resident,Yes
@@ -3181,8 +3231,8 @@ age,race,sex,county,chronic_condition
 90+,African-American/ Black,Female,Non-Georgia Resident,Yes
 77,Asian,Male,Non-Georgia Resident,Yes
 59,African-American/ Black,Female,Non-Georgia Resident,Yes
-82,White,Male,Non-Georgia Resident,No
 84,African-American/ Black,Female,Non-Georgia Resident,Unknown
+82,White,Male,Non-Georgia Resident,No
 68,African-American/ Black,Female,Non-Georgia Resident,No
 87,Asian,Female,Non-Georgia Resident,Unknown
 74,Unknown,Male,Non-Georgia Resident,Unknown
@@ -3208,44 +3258,45 @@ age,race,sex,county,chronic_condition
 77,White,Male,Non-Georgia Resident,Yes
 75,African-American/ Black,Male,Non-Georgia Resident,No
 71,African-American/ Black,Male,Non-Georgia Resident,Unknown
-64,African-American/ Black,Male,Non-Georgia Resident,Yes
 76,White,Female,Non-Georgia Resident,Yes
+64,African-American/ Black,Male,Non-Georgia Resident,Yes
 61,Other,Female,Non-Georgia Resident,Unknown
 52,African-American/ Black,Female,Non-Georgia Resident,Yes
+70,White,Female,Non-Georgia Resident,No
 71,White,Female,Non-Georgia Resident,Yes
 55,African-American/ Black,Female,Non-Georgia Resident,Yes
 64,African-American/ Black,Male,Non-Georgia Resident,Yes
-52,Other,Female,Non-Georgia Resident,No
 57,African-American/ Black,Male,Non-Georgia Resident,Yes
+52,Other,Female,Non-Georgia Resident,No
 85,White,Male,Non-Georgia Resident,Yes
 62,White,Female,Non-Georgia Resident,Yes
 67,African-American/ Black,Female,Non-Georgia Resident,No
 27,White,Female,Non-Georgia Resident,Unknown
-67,African-American/ Black,Male,Non-Georgia Resident,No
 59,White,Male,Non-Georgia Resident,Yes
 75,African-American/ Black,Female,Non-Georgia Resident,Yes
 72,White,Male,Non-Georgia Resident,Yes
 69,White,Male,Non-Georgia Resident,Yes
 64,African-American/ Black,Male,Non-Georgia Resident,No
+67,African-American/ Black,Male,Non-Georgia Resident,No
 81,White,Male,Non-Georgia Resident,Yes
 82,African-American/ Black,Female,Non-Georgia Resident,Yes
-72,White,Female,Non-Georgia Resident,Yes
 38,African-American/ Black,Male,Non-Georgia Resident,Unknown
-60,White,Female,Non-Georgia Resident,Yes
 83,White,Male,Non-Georgia Resident,Yes
 68,African-American/ Black,Female,Non-Georgia Resident,Yes
 87,African-American/ Black,Male,Non-Georgia Resident,Yes
 73,White,Male,Non-Georgia Resident,Yes
 59,African-American/ Black,Male,Non-Georgia Resident,Yes
-65,African-American/ Black,Female,Non-Georgia Resident,Unknown
+72,White,Female,Non-Georgia Resident,Yes
+60,White,Female,Non-Georgia Resident,Yes
 80,African-American/ Black,Male,Non-Georgia Resident,Yes
 90+,White,Female,Non-Georgia Resident,Yes
 54,Unknown,Male,Unknown,Yes
 81,Unknown,Male,Unknown,Yes
 81,Unknown,Male,Unknown,Unknown
-88,White,Female,Unknown,Unknown
+62,Unknown,Female,Unknown,Unknown
 67,Unknown,Male,Unknown,Unknown
 62,Other,Male,Unknown,Unknown
+69,African-American/ Black,Female,Unknown,Yes
 72,African-American/ Black,Male,Upson,Yes
 79,African-American/ Black,Female,Upson,Unknown
 74,African-American/ Black,Male,Upson,No
@@ -3345,7 +3396,7 @@ age,race,sex,county,chronic_condition
 62,African-American/ Black,Female,Ware,Yes
 71,African-American/ Black,Male,Ware,Unknown
 64,White,Male,Ware,Unknown
-74,White,Female,Ware,No
+73,White,Female,Ware,No
 72,African-American/ Black,Male,Ware,Yes
 86,White,Male,Ware,Yes
 72,White,Male,Ware,Unknown
@@ -3361,6 +3412,7 @@ age,race,sex,county,chronic_condition
 89,White,Male,Wayne,Unknown
 59,African-American/ Black,Male,Webster,Yes
 56,White,Female,Webster,Yes
+74,White,Male,Wheeler,Unknown
 65,White,Male,White,Yes
 90+,White,Female,White,Yes
 26,White,Male,White,No
@@ -3401,6 +3453,7 @@ age,race,sex,county,chronic_condition
 90+,White,Female,Wilcox,Yes
 74,African-American/ Black,Female,Wilcox,Yes
 79,White,Male,Wilcox,Unknown
+67,African-American/ Black,Female,Wilcox,Unknown
 64,White,Female,Wilcox,Yes
 79,White,Male,Wilcox,Unknown
 84,White,Male,Wilcox,Unknown
