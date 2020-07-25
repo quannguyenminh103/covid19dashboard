@@ -1,11 +1,11 @@
-# library(dplyr)
-# library(Hmisc)
-# library(stringr)
-# library(ggthemes)
-# library(data.table)
-# library(RColorBrewer)
-# library(leaflet)
-# library(sf)
+library(dplyr)
+library(Hmisc)
+library(stringr)
+library(ggthemes)
+library(data.table)
+library(RColorBrewer)
+library(leaflet)
+library(sf)
 
 dataTracking = fread('https://covid19-lake.s3.us-east-2.amazonaws.com/tableau-covid-datahub/csv/COVID-19-Activity.csv')
 county <<- st_read("https://raw.githubusercontent.com/appliedbinf/covid19-event-risk-planner/b96fa86886b1f7b9c62ed2853bd07c7bcdaa7f0a/COVID19-Event-Risk-Planner/map_data/tl_2017_us_county.geojson") 
@@ -71,7 +71,6 @@ df <- inner_join(state_df,pop, by = 'fips')
 df$County <- capitalize(df$County)
 df$State <- capitalize(df$State)
 
-head(county)
 eventMap <- function(size){
   risk <- as.data.frame(round((1-(1-10*(df$Today_Positive-df$Past_Positive)/df$pop)**size)*100,2))
   df[,9] <- risk
@@ -144,3 +143,4 @@ eventMap <- function(size){
     addLegend(pal = pal, values = ~df$risk, opacity = 0.7, title = 'Risk Score (%)',
               position = "bottomright")
 }
+eventMap(100)
